@@ -24,9 +24,13 @@ class Event extends Model
             return null;
         }
 
-        return str_starts_with($this->cover_image, 'http')
-            ? $this->cover_image
-            : Storage::url($this->cover_image);
+        // Absolute URL (external) or root-relative public path (seeded placeholders)
+        if (str_starts_with($this->cover_image, 'http') || str_starts_with($this->cover_image, '/')) {
+            return $this->cover_image;
+        }
+
+        // Otherwise a stored upload path on the public disk
+        return Storage::url($this->cover_image);
     }
 
     public function location()

@@ -19,7 +19,7 @@ class SettingSeeder extends Seeder
             ['key' => 'hero_title', 'value' => "Discover the Heart of Northern Tanzania", 'group' => 'homepage', 'type' => 'text', 'label' => 'Hero Title'],
             ['key' => 'hero_subtitle', 'value' => 'Karatu is your gateway to Ngorongoro, Lake Manyara, Lake Eyasi and unforgettable cultural experiences.', 'group' => 'homepage', 'type' => 'textarea', 'label' => 'Hero Subtitle'],
             ['key' => 'hero_media_type', 'value' => 'image', 'group' => 'homepage', 'type' => 'select', 'label' => 'Hero Background Type (image or video)'],
-            ['key' => 'hero_image', 'value' => 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1800&q=85&auto=format&fit=crop', 'group' => 'homepage', 'type' => 'url', 'label' => 'Hero Background Image URL (also used as video poster)'],
+            ['key' => 'hero_image', 'value' => '/images/placeholders/savanna.jpg', 'group' => 'homepage', 'type' => 'url', 'label' => 'Hero Background Image URL (also used as video poster)'],
             ['key' => 'hero_video', 'value' => '', 'group' => 'homepage', 'type' => 'url', 'label' => 'Hero Background Video URL (MP4, used when type = video)'],
             ['key' => 'hero_search_placeholder', 'value' => 'Search for lodges, tours, activities...', 'group' => 'homepage', 'type' => 'text', 'label' => 'Hero Search Placeholder'],
 
@@ -30,7 +30,7 @@ class SettingSeeder extends Seeder
             // Contact
             ['key' => 'contact_address', 'value' => 'Karatu Town, Arusha Region, Tanzania', 'group' => 'contact', 'type' => 'text', 'label' => 'Address'],
             ['key' => 'contact_email', 'value' => 'info@visitkaratu.com', 'group' => 'contact', 'type' => 'email', 'label' => 'Email'],
-            ['key' => 'contact_phone', 'value' => '+255 27 253 4000', 'group' => 'contact', 'type' => 'text', 'label' => 'Phone'],
+            ['key' => 'contact_phone', 'value' => '+255 748 859 172', 'group' => 'contact', 'type' => 'text', 'label' => 'Phone'],
 
             // Footer
             ['key' => 'footer_about', 'value' => 'Your gateway to Ngorongoro Crater, Lake Eyasi, Lake Manyara, and the heart of northern Tanzania.', 'group' => 'footer', 'type' => 'textarea', 'label' => 'Footer About Text'],

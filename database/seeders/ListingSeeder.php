@@ -261,8 +261,8 @@ class ListingSeeder extends Seeder
                     'status' => 'published',
                     'plan_tier' => $i % 4 === 0 ? 'featured' : 'basic',
                     'is_popular' => $i % 5 === 0,
-                    'phone' => '+255 27 253 4900',
-                    'whatsapp_number' => '+255 27 253 4900',
+                    'phone' => '+255 74 885 9172',
+                    'whatsapp_number' => '+255 74 885 9172',
                     'email' => 'info@visitkaratu.com',
                     'published_at' => now()->subDays(rand(1, 40)),
                 ]

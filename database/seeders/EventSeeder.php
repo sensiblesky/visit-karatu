@@ -19,7 +19,7 @@ class EventSeeder extends Seeder
                 'location' => 'karatu-town',
                 'starts_at' => now()->addDays(12)->setTime(10, 0),
                 'ends_at' => now()->addDays(14)->setTime(18, 0),
-                'cover_image' => 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&q=80',
+                'cover_image' => '/images/placeholders/culture.jpg',
             ],
             [
                 'title' => 'Ngorongoro Highlands Coffee Harvest',
@@ -27,7 +27,7 @@ class EventSeeder extends Seeder
                 'location' => 'karatu-town',
                 'starts_at' => now()->addDays(20)->setTime(8, 0),
                 'ends_at' => now()->addDays(20)->setTime(13, 0),
-                'cover_image' => 'https://images.unsplash.com/photo-1442550528053-c431ecb55509?w=800&q=80',
+                'cover_image' => '/images/placeholders/event-coffee.jpg',
             ],
             [
                 'title' => 'Lake Eyasi Hadzabe Heritage Day',
@@ -35,7 +35,7 @@ class EventSeeder extends Seeder
                 'location' => 'lake-eyasi-area',
                 'starts_at' => now()->addDays(28)->setTime(6, 30),
                 'ends_at' => now()->addDays(28)->setTime(15, 0),
-                'cover_image' => 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80',
+                'cover_image' => '/images/placeholders/event-hadzabe.jpg',
             ],
             [
                 'title' => 'Karatu Farmers & Crafts Market',
@@ -43,7 +43,7 @@ class EventSeeder extends Seeder
                 'location' => 'karatu-town',
                 'starts_at' => now()->addDays(5)->setTime(9, 0),
                 'ends_at' => now()->addDays(5)->setTime(16, 0),
-                'cover_image' => 'https://images.unsplash.com/photo-1577083552756-a197272ba42a?w=800&q=80',
+                'cover_image' => '/images/placeholders/crafts.jpg',
             ],
             [
                 'title' => 'Lake Manyara Birding Weekend',
@@ -51,7 +51,7 @@ class EventSeeder extends Seeder
                 'location' => 'lake-manyara-area',
                 'starts_at' => now()->addDays(34)->setTime(7, 0),
                 'ends_at' => now()->addDays(35)->setTime(17, 0),
-                'cover_image' => 'https://images.unsplash.com/photo-1452570053594-1b985d6ea890?w=800&q=80',
+                'cover_image' => '/images/placeholders/event-birding.jpg',
             ],
             [
                 'title' => 'Crater Rim Trail Run',
@@ -59,7 +59,7 @@ class EventSeeder extends Seeder
                 'location' => 'near-crater-gate',
                 'starts_at' => now()->addDays(45)->setTime(6, 0),
                 'ends_at' => now()->addDays(45)->setTime(11, 0),
-                'cover_image' => 'https://images.unsplash.com/photo-1502904550040-7534597429ae?w=800&q=80',
+                'cover_image' => '/images/placeholders/event-trail.jpg',
             ],
             [
                 'title' => 'Taste of Karatu Food Fair',
@@ -67,7 +67,7 @@ class EventSeeder extends Seeder
                 'location' => 'karatu-town',
                 'starts_at' => now()->addDays(52)->setTime(11, 0),
                 'ends_at' => now()->addDays(52)->setTime(21, 0),
-                'cover_image' => 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80',
+                'cover_image' => '/images/placeholders/event-food.jpg',
             ],
         ];
 

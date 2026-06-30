@@ -16,7 +16,7 @@
     <aside class="w-64 bg-gray-900 text-gray-100 flex flex-col shrink-0">
         <div class="px-6 py-5 border-b border-gray-700">
             <a href="{{ route('home') }}" class="inline-flex items-center mb-2">
-                <img src="{{ asset('images/logo-white.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-10 w-auto">
+                <img loading="lazy" decoding="async" src="{{ asset('images/logo-white.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-10 w-auto">
             </a>
             <p class="text-xs text-gray-400 truncate">{{ auth()->user()->name }}</p>
         </div>

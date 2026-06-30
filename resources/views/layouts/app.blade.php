@@ -22,7 +22,7 @@
 
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="flex items-center shrink-0">
-                <img src="{{ asset('images/logo.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-11 w-auto">
+                <img loading="lazy" decoding="async" src="{{ asset('images/logo.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-11 w-auto">
             </a>
 
             {{-- Desktop nav --}}
@@ -146,7 +146,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
             <div class="lg:col-span-1">
                 <a href="{{ route('home') }}" class="inline-flex items-center mb-4">
-                    <img src="{{ asset('images/logo-white.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-14 w-auto">
+                    <img loading="lazy" decoding="async" src="{{ asset('images/logo-white.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-14 w-auto">
                 </a>
                 <p class="text-forest-300 text-sm leading-relaxed">{{ setting('footer_about', 'Your gateway to Ngorongoro Crater, Lake Eyasi, Lake Manyara, and the heart of northern Tanzania.') }}</p>
                 <div class="flex gap-3 mt-5">
@@ -201,7 +201,7 @@
                     </li>
                     <li class="flex items-start gap-2.5">
                         <svg class="w-4 h-4 mt-0.5 shrink-0 text-forest-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                        {{ setting('contact_phone', '+255 27 253 4000') }}
+                        {{ setting('contact_phone', '+255 748 859 172') }}
                     </li>
                 </ul>
             </div>

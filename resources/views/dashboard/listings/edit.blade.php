@@ -41,7 +41,7 @@
                          @dragstart="onDragStart($event, {{ $img->id }})"
                          @dragover.prevent
                          @drop="onDrop($event, {{ $img->id }})">
-                        <img src="{{ Storage::url($img->path) }}" alt="" class="h-32 w-full object-cover pointer-events-none">
+                        <img loading="lazy" decoding="async" src="{{ Storage::url($img->path) }}" alt="" class="h-32 w-full object-cover pointer-events-none">
 
                         @if($img->is_cover)
                             <span class="absolute top-2 left-2 bg-forest-700 text-white text-xs font-bold px-2 py-0.5 rounded-full">Cover</span>

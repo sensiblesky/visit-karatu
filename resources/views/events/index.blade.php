@@ -33,7 +33,7 @@
                 @foreach($events as $event)
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col">
                         <div class="relative h-48 overflow-hidden bg-forest-100">
-                            <img src="{{ $event->cover_image_url ?? 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80' }}"
+                            <img loading="lazy" decoding="async" src="{{ $event->cover_image_url ?? '/images/placeholders/event-default.jpg' }}"
                                  alt="{{ $event->title }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             {{-- Date chip --}}

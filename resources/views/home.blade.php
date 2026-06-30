@@ -7,7 +7,7 @@
 
 {{-- ===== HERO ===== --}}
 @php
-    $heroImage = setting('hero_image', 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1800&q=85&auto=format&fit=crop');
+    $heroImage = setting('hero_image', '/images/placeholders/savanna.jpg');
     $heroVideo = setting('hero_video');
     $useVideo  = setting('hero_media_type', 'image') === 'video' && !empty($heroVideo);
 @endphp
@@ -21,7 +21,7 @@
                 <source src="{{ $heroVideo }}" type="video/mp4">
             </video>
         @else
-            <img src="{{ $heroImage }}" alt="Karatu landscape" class="w-full h-full object-cover object-center">
+            <img loading="lazy" decoding="async" src="{{ $heroImage }}" alt="Karatu landscape" class="w-full h-full object-cover object-center">
         @endif
         <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/75"></div>
     </div>
@@ -159,20 +159,20 @@
                         <div class="relative h-52 overflow-hidden bg-forest-100">
                             @php
                                 $placeholders = [
-                                    'https://images.unsplash.com/photo-1551732998-9573f695fdbb?w=600&q=80',
-                                    'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80',
-                                    'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80',
-                                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80',
-                                    'https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?w=600&q=80',
+                                    '/images/placeholders/wildlife.jpg',
+                                    '/images/placeholders/savanna.jpg',
+                                    '/images/placeholders/culture.jpg',
+                                    '/images/placeholders/lodge.jpg',
+                                    '/images/placeholders/pool.jpg',
                                 ];
                                 $ph = $placeholders[$loop->index % count($placeholders)];
                             @endphp
                             @if($listing->coverImage)
-                                <img src="{{ Storage::url($listing->coverImage->path) }}"
+                                <img loading="lazy" decoding="async" src="{{ Storage::url($listing->coverImage->path) }}"
                                      alt="{{ $listing->name }}"
                                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             @else
-                                <img src="{{ $ph }}" alt="{{ $listing->name }}"
+                                <img loading="lazy" decoding="async" src="{{ $ph }}" alt="{{ $listing->name }}"
                                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             @endif
 
@@ -283,13 +283,13 @@
             {{-- Image collage --}}
             <div class="relative h-[500px] hidden lg:block">
                 <div class="absolute top-0 right-0 w-64 h-72 rounded-3xl overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1551732998-9573f695fdbb?w=500&q=85" alt="Wildlife" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/images/placeholders/wildlife.jpg" alt="Wildlife" class="w-full h-full object-cover">
                 </div>
                 <div class="absolute top-20 left-0 w-56 h-56 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400&q=85" alt="Culture" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/images/placeholders/culture.jpg" alt="Culture" class="w-full h-full object-cover">
                 </div>
                 <div class="absolute bottom-0 right-12 w-52 h-48 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&q=85" alt="Lodge" class="w-full h-full object-cover">
+                    <img loading="lazy" decoding="async" src="/images/placeholders/lodge.jpg" alt="Lodge" class="w-full h-full object-cover">
                 </div>
                 {{-- Floating stat card --}}
                 <div class="absolute bottom-20 left-16 bg-white rounded-2xl shadow-xl p-4 border border-gray-100">
@@ -316,17 +316,17 @@
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             @php
                 $catImages = [
-                    'lodges-hotels'  => 'https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?w=600&q=80',
-                    'tour-operators' => 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80',
-                    'sport-clubs'    => 'https://images.unsplash.com/photo-1551188167-6cf8c27ed5fc?w=600&q=80',
-                    'attractions'    => 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80',
-                    'culture-crafts' => 'https://images.unsplash.com/photo-1577083552756-a197272ba42a?w=600&q=80',
+                    'lodges-hotels'  => '/images/placeholders/pool.jpg',
+                    'tour-operators' => '/images/placeholders/savanna.jpg',
+                    'sport-clubs'    => '/images/placeholders/sport.jpg',
+                    'attractions'    => '/images/placeholders/culture.jpg',
+                    'culture-crafts' => '/images/placeholders/crafts.jpg',
                 ];
             @endphp
             @foreach($categories->sortBy('sort_order') as $cat)
                 <a href="{{ route('listings.category', $cat->slug) }}"
                    class="group relative rounded-3xl overflow-hidden h-52 md:h-64 block">
-                    <img src="{{ $catImages[$cat->slug] ?? 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80' }}"
+                    <img loading="lazy" decoding="async" src="{{ $catImages[$cat->slug] ?? '/images/placeholders/savanna.jpg' }}"
                          alt="{{ $cat->name }}"
                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
@@ -363,7 +363,7 @@
                         class="shrink-0 flex items-center justify-center h-14 px-2"
                         aria-hidden="{{ $loop->index >= $sponsors->count() ? 'true' : 'false' }}">
                         @if($logo)
-                            <img src="{{ $logo }}" alt="{{ $sponsor->name }}"
+                            <img loading="lazy" decoding="async" src="{{ $logo }}" alt="{{ $sponsor->name }}"
                                  class="max-h-12 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition duration-300">
                         @else
                             <span class="text-base font-bold text-gray-300 whitespace-nowrap">{{ $sponsor->name }}</span>
@@ -379,7 +379,7 @@
 {{-- ===== CTA BANNER ===== --}}
 <section class="relative py-24 overflow-hidden">
     <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1551732998-9573f695fdbb?w=1600&q=80" alt="" class="w-full h-full object-cover">
+        <img loading="lazy" decoding="async" src="/images/placeholders/wildlife.jpg" alt="" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-forest-900/80"></div>
     </div>
     <div class="relative z-10 max-w-3xl mx-auto text-center px-4">

@@ -86,7 +86,23 @@ class ListingController extends Controller
             ? $listing->favorites()->where('user_id', auth()->id())->exists()
             : false;
 
-        return view('listings.show', compact('listing', 'isFavorited'));
+        // "You might also like" — other published listings in the same category,
+        // falling back to the same location if the category is thin.
+        $related = Listing::published()
+            ->where('id', '!=', $listing->id)
+            ->where(function ($q) use ($listing) {
+                $q->where('category_id', $listing->category_id)
+                  ->orWhere('location_id', $listing->location_id);
+            })
+            ->with(['category', 'location', 'coverImage'])
+            ->withAvg('approvedReviews', 'rating')
+            ->withCount('approvedReviews')
+            ->orderByRaw('category_id = ? desc', [$listing->category_id])
+            ->featuredFirst()
+            ->limit(4)
+            ->get();
+
+        return view('listings.show', compact('listing', 'isFavorited', 'related'));
     }
 
     private function applyFilters($query, Request $request): void

@@ -13,12 +13,12 @@
 
         {{-- Left: brand panel --}}
         <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200&q=85"
+            <img loading="lazy" decoding="async" src="/images/placeholders/savanna.jpg"
                  alt="Karatu landscape" class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-br from-forest-900/80 to-forest-950/90"></div>
             <div class="relative z-10 flex flex-col justify-between p-12 text-white">
                 <a href="{{ route('home') }}" class="inline-flex items-center">
-                    <img src="{{ asset('images/logo-white.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-14 w-auto">
+                    <img loading="lazy" decoding="async" src="{{ asset('images/logo-white.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-14 w-auto">
                 </a>
                 <div>
                     <h2 class="text-4xl font-extrabold leading-tight mb-4">Your gateway to<br>Northern Tanzania</h2>
@@ -39,7 +39,7 @@
         {{-- Right: form panel --}}
         <div class="flex-1 flex flex-col justify-center items-center px-6 py-12 bg-gray-50">
             <a href="{{ route('home') }}" class="lg:hidden inline-flex items-center mb-8">
-                <img src="{{ asset('images/logo.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-12 w-auto">
+                <img loading="lazy" decoding="async" src="{{ asset('images/logo.png') }}" alt="{{ setting('site_name', 'Visit Karatu') }}" class="h-12 w-auto">
             </a>
 
             <div class="w-full sm:max-w-md bg-white shadow-sm border border-gray-100 rounded-3xl p-8">

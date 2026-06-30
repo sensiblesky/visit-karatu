@@ -8,7 +8,7 @@
 {{-- Hero --}}
 <section class="relative overflow-hidden min-h-[360px] flex items-center">
     <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1800&q=85&auto=format&fit=crop"
+        <img loading="lazy" decoding="async" src="/images/placeholders/savanna.jpg"
              alt="Karatu highlands" class="w-full h-full object-cover object-center">
         <div class="absolute inset-0 bg-gradient-to-b from-forest-950/70 to-forest-950/85"></div>
     </div>
@@ -54,16 +54,16 @@
 
         <div class="grid grid-cols-2 gap-4">
             <div class="rounded-3xl overflow-hidden h-44 sm:h-56">
-                <img src="https://images.unsplash.com/photo-1551732998-9573f695fdbb?w=600&q=80" alt="Wildlife" class="w-full h-full object-cover">
+                <img loading="lazy" decoding="async" src="/images/placeholders/wildlife.jpg" alt="Wildlife" class="w-full h-full object-cover">
             </div>
             <div class="rounded-3xl overflow-hidden h-44 sm:h-56 mt-6">
-                <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80" alt="Culture" class="w-full h-full object-cover">
+                <img loading="lazy" decoding="async" src="/images/placeholders/culture.jpg" alt="Culture" class="w-full h-full object-cover">
             </div>
             <div class="rounded-3xl overflow-hidden h-44 sm:h-56 -mt-2">
-                <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80" alt="Lodge" class="w-full h-full object-cover">
+                <img loading="lazy" decoding="async" src="/images/placeholders/lodge.jpg" alt="Lodge" class="w-full h-full object-cover">
             </div>
             <div class="rounded-3xl overflow-hidden h-44 sm:h-56 mt-4">
-                <img src="https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?w=600&q=80" alt="Pool" class="w-full h-full object-cover">
+                <img loading="lazy" decoding="async" src="/images/placeholders/pool.jpg" alt="Pool" class="w-full h-full object-cover">
             </div>
         </div>
     </div>
@@ -130,7 +130,7 @@
 {{-- CTA --}}
 <section class="relative py-20 overflow-hidden">
     <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=80" alt="" class="w-full h-full object-cover">
+        <img loading="lazy" decoding="async" src="/images/placeholders/savanna.jpg" alt="" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-forest-900/85"></div>
     </div>
     <div class="relative z-10 max-w-3xl mx-auto text-center px-4">

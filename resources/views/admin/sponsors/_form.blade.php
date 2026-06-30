@@ -24,7 +24,7 @@
         <label class="block text-sm font-medium text-gray-700 mb-1">Logo</label>
         @if($sponsor->logo_path)
             <div class="mb-3 w-40 h-20 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center overflow-hidden">
-                <img src="{{ Storage::url($sponsor->logo_path) }}" alt="{{ $sponsor->name }}" class="max-h-16 max-w-[150px] object-contain">
+                <img loading="lazy" decoding="async" src="{{ Storage::url($sponsor->logo_path) }}" alt="{{ $sponsor->name }}" class="max-h-16 max-w-[150px] object-contain">
             </div>
         @endif
         <input type="file" name="logo" accept="image/*"

@@ -30,22 +30,40 @@
                 {{-- Hero gallery --}}
                 @php
                     $placeholders = [
-                        'https://images.unsplash.com/photo-1551732998-9573f695fdbb?w=1200&q=85',
-                        'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80',
-                        'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80',
-                        'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80',
+                        '/images/placeholders/wildlife.jpg',
+                        '/images/placeholders/savanna.jpg',
+                        '/images/placeholders/culture.jpg',
+                        '/images/placeholders/lodge.jpg',
                     ];
                     $cover = $listing->images->firstWhere('is_cover', true) ?? $listing->images->first();
                     $otherImages = $listing->images->where('is_cover', false)->values();
                 @endphp
 
-                <div x-data="{ activeImg: '{{ $cover ? Storage::url($cover->path) : $placeholders[0] }}' }"
+                @php $galleryCount = $listing->images->count() ?: count($placeholders); @endphp
+                <div x-data="{ activeImg: '{{ $cover ? Storage::url($cover->path) : $placeholders[0] }}', lightbox: false }"
                      class="mb-6">
                     {{-- Main image --}}
-                    <div class="rounded-3xl overflow-hidden h-72 md:h-[460px] bg-forest-100 mb-3 relative group cursor-zoom-in">
-                        <img :src="activeImg" alt="{{ $listing->name }}"
-                             class="w-full h-full object-cover transition-all duration-500">
+                    <div @click="lightbox = true"
+                         class="rounded-3xl overflow-hidden h-72 md:h-[460px] bg-forest-100 mb-3 relative group cursor-zoom-in">
+                        <img loading="lazy" decoding="async" :src="activeImg" alt="{{ $listing->name }}"
+                             class="w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.02]">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+                        {{-- View / count badge --}}
+                        <div class="absolute bottom-3 right-3 flex items-center gap-1.5 bg-black/55 backdrop-blur text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15l4-4 4 4M14 13l2-2 4 4"/></svg>
+                            {{ $galleryCount }} photo{{ $galleryCount === 1 ? '' : 's' }}
+                        </div>
+                    </div>
+
+                    {{-- Lightbox --}}
+                    <div x-show="lightbox" x-cloak x-transition.opacity
+                         @keydown.escape.window="lightbox = false"
+                         class="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4" style="display:none">
+                        <button @click="lightbox = false" class="absolute top-5 right-5 text-white/80 hover:text-white">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                        <img loading="lazy" decoding="async" :src="activeImg" alt="{{ $listing->name }}" @click.stop
+                             class="max-h-[88vh] max-w-[92vw] object-contain rounded-xl shadow-2xl">
                     </div>
                     {{-- Thumbnails --}}
                     @if($listing->images->count() > 1 || true)
@@ -54,14 +72,14 @@
                                 <button @click="activeImg = '{{ Storage::url($cover->path) }}'"
                                         :class="activeImg === '{{ Storage::url($cover->path) }}' ? 'ring-2 ring-forest-600' : 'ring-0'"
                                         class="h-20 w-28 rounded-xl overflow-hidden shrink-0 ring-offset-2 transition">
-                                    <img src="{{ Storage::url($cover->path) }}" class="w-full h-full object-cover">
+                                    <img loading="lazy" decoding="async" src="{{ Storage::url($cover->path) }}" class="w-full h-full object-cover">
                                 </button>
                             @else
                                 @foreach(array_slice($placeholders, 0, 4) as $idx => $ph)
                                     <button @click="activeImg = '{{ $ph }}'"
                                             :class="activeImg === '{{ $ph }}' ? 'ring-2 ring-forest-600' : 'ring-0'"
                                             class="h-20 w-28 rounded-xl overflow-hidden shrink-0 ring-offset-2 transition">
-                                        <img src="{{ $ph }}" class="w-full h-full object-cover">
+                                        <img loading="lazy" decoding="async" src="{{ $ph }}" class="w-full h-full object-cover">
                                     </button>
                                 @endforeach
                             @endif
@@ -69,7 +87,7 @@
                                 <button @click="activeImg = '{{ Storage::url($img->path) }}'"
                                         :class="activeImg === '{{ Storage::url($img->path) }}' ? 'ring-2 ring-forest-600' : 'ring-0'"
                                         class="h-20 w-28 rounded-xl overflow-hidden shrink-0 ring-offset-2 transition">
-                                    <img src="{{ Storage::url($img->path) }}" class="w-full h-full object-cover">
+                                    <img loading="lazy" decoding="async" src="{{ Storage::url($img->path) }}" class="w-full h-full object-cover">
                                 </button>
                             @endforeach
                         </div>
@@ -93,10 +111,23 @@
                                 @endif
                             </div>
                             <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight mb-2">{{ $listing->name }}</h1>
-                            <p class="text-gray-500 flex items-center gap-1.5 text-sm">
-                                <svg class="w-4 h-4 text-forest-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                {{ $listing->location->name }}, Karatu, Tanzania
-                            </p>
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <p class="text-gray-500 flex items-center gap-1.5 text-sm">
+                                    <svg class="w-4 h-4 text-forest-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    {{ $listing->location->name }}, Karatu, Tanzania
+                                </p>
+                                <button type="button"
+                                        x-data="{ copied: false }"
+                                        @click="
+                                            const url = window.location.href;
+                                            if (navigator.share) { navigator.share({ title: @js($listing->name), url }).catch(()=>{}); }
+                                            else { navigator.clipboard.writeText(url); copied = true; setTimeout(()=>copied=false, 2000); }
+                                        "
+                                        class="inline-flex items-center gap-1.5 text-sm font-medium text-forest-700 hover:text-forest-900 transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                                    <span x-text="copied ? 'Link copied!' : 'Share'"></span>
+                                </button>
+                            </div>
                         </div>
                         @if($listing->approved_reviews_avg_rating)
                             <div class="bg-forest-50 rounded-2xl px-5 py-3 text-center">
@@ -156,6 +187,41 @@
                             </div>
                         @endforeach
                     </div>
+                </div>
+
+                {{-- Location / map --}}
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mt-5">
+                    <div class="p-7 pb-4">
+                        <h3 class="font-bold text-gray-900 mb-1 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            Location
+                        </h3>
+                        <p class="text-sm text-gray-500">{{ $listing->address_text ?? $listing->location->name . ', Karatu, Tanzania' }}</p>
+                    </div>
+                    @php
+                        $lat = $listing->latitude ?? $listing->location->latitude;
+                        $lng = $listing->longitude ?? $listing->location->longitude;
+                    @endphp
+                    @if($lat && $lng)
+                        @php $d = 0.04; @endphp
+                        <iframe
+                            title="Map of {{ $listing->name }}"
+                            class="w-full h-64 border-0"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            src="https://www.openstreetmap.org/export/embed.html?bbox={{ $lng - $d }}%2C{{ $lat - $d }}%2C{{ $lng + $d }}%2C{{ $lat + $d }}&layer=mapnik&marker={{ $lat }}%2C{{ $lng }}"></iframe>
+                        <div class="px-7 py-3 border-t border-gray-100">
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ $lat }},{{ $lng }}" target="_blank" rel="noopener"
+                               class="inline-flex items-center gap-1.5 text-sm font-semibold text-forest-700 hover:text-forest-900">
+                                Get directions
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </a>
+                        </div>
+                    @else
+                        <div class="h-40 bg-forest-50 flex items-center justify-center text-forest-300 text-sm">
+                            Map location not set
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -310,6 +376,84 @@
                 </div>
             </div>
         </div>
+
+        {{-- ===== YOU MIGHT ALSO LIKE ===== --}}
+        @if($related->isNotEmpty())
+            <div class="mt-14">
+                <div class="flex items-end justify-between mb-6">
+                    <div>
+                        <p class="text-forest-600 text-sm font-semibold tracking-wide uppercase mb-1">Keep exploring</p>
+                        <h2 class="text-2xl font-bold text-gray-900">You might also like</h2>
+                    </div>
+                    <a href="{{ route('listings.category', $listing->category->slug) }}"
+                       class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-forest-700 hover:text-forest-900">
+                        More {{ $listing->category->name }}
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                </div>
+                <div class="flex flex-wrap gap-5">
+                    @php
+                        $relPh = [
+                            '/images/placeholders/pool.jpg',
+                            '/images/placeholders/lodge.jpg',
+                            '/images/placeholders/culture.jpg',
+                            '/images/placeholders/savanna.jpg',
+                        ];
+                    @endphp
+                    @foreach($related as $rel)
+                        <a href="{{ route('listings.show', $rel->slug) }}"
+                           class="card group flex flex-col grow basis-[calc(50%-0.625rem)] lg:basis-[260px] max-w-full">
+                            <div class="relative h-40 overflow-hidden bg-forest-100">
+                                <img loading="lazy" decoding="async" src="{{ $rel->coverImage ? Storage::url($rel->coverImage->path) : $relPh[$loop->index % count($relPh)] }}"
+                                     alt="{{ $rel->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute bottom-2 left-2">
+                                    <span class="bg-white/95 text-forest-800 text-[11px] font-semibold px-2 py-0.5 rounded-full shadow-sm">{{ $rel->category->name }}</span>
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col flex-1">
+                                <h3 class="font-bold text-gray-900 text-sm group-hover:text-forest-700 transition line-clamp-2 leading-snug">{{ $rel->name }}</h3>
+                                <p class="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                                    <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    {{ $rel->location->name }}
+                                </p>
+                                <div class="mt-auto pt-3 flex items-center justify-between">
+                                    @if($rel->price_amount)
+                                        <span class="text-forest-700 font-bold text-sm">${{ number_format($rel->price_amount) }}</span>
+                                    @else
+                                        <span class="text-xs text-gray-400">Enquire</span>
+                                    @endif
+                                    @if($rel->approved_reviews_avg_rating)
+                                        <span class="flex items-center gap-1 text-xs text-gray-500">
+                                            <svg class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                            {{ number_format($rel->approved_reviews_avg_rating, 1) }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
+</div>
+
+{{-- ===== MOBILE STICKY BOOKING BAR ===== --}}
+<div class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+    <div class="min-w-0">
+        @if($listing->price_amount)
+            <div class="text-lg font-extrabold text-forest-700 leading-none">${{ number_format($listing->price_amount) }}
+                <span class="text-xs font-normal text-gray-400">/ {{ $listing->price_unit }}</span>
+            </div>
+        @else
+            <div class="text-sm font-semibold text-gray-700">Contact for pricing</div>
+        @endif
+        <p class="text-[11px] text-gray-400 truncate">{{ $listing->name }}</p>
+    </div>
+    @php $waBook = $listing->whatsapp_number ? 'https://wa.me/' . preg_replace('/\D/', '', $listing->whatsapp_number) : ($listing->phone ? 'tel:' . $listing->phone : ($listing->email ? 'mailto:' . $listing->email : '#')); @endphp
+    <a href="{{ $waBook }}" @if($listing->whatsapp_number) target="_blank" @endif
+       class="btn-primary py-3 px-6 rounded-xl shrink-0 text-sm">
+        Book Now
+    </a>
 </div>
 @endsection

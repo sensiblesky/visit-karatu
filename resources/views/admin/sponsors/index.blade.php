@@ -35,7 +35,7 @@
                         <td class="px-6 py-4">
                             <div class="w-24 h-12 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center overflow-hidden">
                                 @if($sponsor->logo_path)
-                                    <img src="{{ Storage::url($sponsor->logo_path) }}" alt="{{ $sponsor->name }}" class="max-h-10 max-w-[88px] object-contain">
+                                    <img loading="lazy" decoding="async" src="{{ Storage::url($sponsor->logo_path) }}" alt="{{ $sponsor->name }}" class="max-h-10 max-w-[88px] object-contain">
                                 @else
                                     <span class="text-xs text-gray-300">No logo</span>
                                 @endif

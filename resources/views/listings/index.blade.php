@@ -95,10 +95,10 @@
                         @foreach($listings as $listing)
                             @php
                                 $placeholders = [
-                                    'https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?w=500&q=80',
-                                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500&q=80',
-                                    'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=500&q=80',
-                                    'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=500&q=80',
+                                    '/images/placeholders/pool.jpg',
+                                    '/images/placeholders/lodge.jpg',
+                                    '/images/placeholders/culture.jpg',
+                                    '/images/placeholders/savanna.jpg',
                                 ];
                                 $ph = $placeholders[$loop->index % count($placeholders)];
                             @endphp
@@ -106,7 +106,7 @@
                                class="card group flex flex-col grow basis-[calc(50%-0.625rem)] lg:basis-[280px] max-w-full">
                                 {{-- Image --}}
                                 <div class="relative h-44 sm:h-48 overflow-hidden bg-forest-100">
-                                    <img src="{{ $listing->coverImage ? Storage::url($listing->coverImage->path) : $ph }}"
+                                    <img loading="lazy" decoding="async" src="{{ $listing->coverImage ? Storage::url($listing->coverImage->path) : $ph }}"
                                          alt="{{ $listing->name }}"
                                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                     <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">

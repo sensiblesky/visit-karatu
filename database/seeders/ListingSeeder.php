@@ -319,17 +319,19 @@ class ListingSeeder extends Seeder
         }
 
         // Seed bookings
+        $guestNames = ['John Mwangi', 'Grace Wanjiru', 'David Kimani', 'Amina Hassan', 'Peter Otieno', 'Fatuma Said', 'James Njoroge', 'Lucy Achieng'];
+        $bookingStatuses = ['pending', 'confirmed', 'confirmed'];
         foreach ($publishedListings->take(3) as $listing) {
             for ($i = 0; $i < 5; $i++) {
                 Booking::create([
                     'listing_id' => $listing->id,
                     'user_id' => $visitor->id,
-                    'guest_name' => fake()->name(),
+                    'guest_name' => $guestNames[array_rand($guestNames)],
                     'adults' => rand(1, 4),
                     'children' => rand(0, 2),
                     'booking_date' => now()->addDays(rand(1, 60)),
                     'amount' => $listing->price_amount * rand(1, 3),
-                    'status' => fake()->randomElement(['pending', 'confirmed', 'confirmed']),
+                    'status' => $bookingStatuses[array_rand($bookingStatuses)],
                 ]);
             }
         }

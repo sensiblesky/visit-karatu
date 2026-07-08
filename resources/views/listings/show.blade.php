@@ -2,6 +2,50 @@
 
 @section('title', $listing->name)
 @section('meta_description', $listing->short_description)
+@php $cover = $listing->images->firstWhere('is_cover', true) ?? $listing->images->first(); @endphp
+@section('og_image', $cover ? url(Storage::url($cover->path)) : url('/images/placeholders/savanna.jpg'))
+@section('og_type', 'place')
+
+@push('head')
+<script type="application/ld+json">
+@php
+    $schemaType = match($listing->category->slug) {
+        'lodges-hotels' => 'LodgingBusiness',
+        'attractions' => 'TouristAttraction',
+        default => 'LocalBusiness',
+    };
+    $ld = [
+        '@context' => 'https://schema.org',
+        '@type' => $schemaType,
+        'name' => $listing->name,
+        'description' => $listing->short_description,
+        'url' => route('listings.show', $listing->slug),
+        'image' => $cover ? url(Storage::url($cover->path)) : url('/images/placeholders/savanna.jpg'),
+        'address' => [
+            '@type' => 'PostalAddress',
+            'addressLocality' => $listing->location->name,
+            'addressRegion' => 'Arusha',
+            'addressCountry' => 'TZ',
+        ],
+    ];
+    if ($listing->latitude && $listing->longitude) {
+        $ld['geo'] = ['@type' => 'GeoCoordinates', 'latitude' => (float) $listing->latitude, 'longitude' => (float) $listing->longitude];
+    }
+    if ($listing->phone) $ld['telephone'] = $listing->phone;
+    if ($listing->approved_reviews_count > 0) {
+        $ld['aggregateRating'] = [
+            '@type' => 'AggregateRating',
+            'ratingValue' => round($listing->approved_reviews_avg_rating, 1),
+            'reviewCount' => $listing->approved_reviews_count,
+        ];
+    }
+    if ($listing->price_amount) {
+        $ld['priceRange'] = '$' . number_format($listing->price_amount);
+    }
+@endphp
+{!! json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
 
 @section('content')
 
@@ -309,6 +353,22 @@
                                             Email the operator
                                         </a>
                                     @endif
+                                </div>
+
+                                {{-- Or send a message right here (emails the operator) --}}
+                                <div class="mt-5 pt-5 border-t border-gray-100">
+                                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2.5">Send a message</p>
+                                    <form method="POST" action="{{ route('enquiries.store', $listing) }}" class="space-y-2.5">
+                                        @csrf
+                                        <input type="text" name="company" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+                                        <input type="text" name="name" value="{{ old('name') }}" placeholder="Your name *" required class="form-input">
+                                        <div class="grid grid-cols-1 gap-2.5">
+                                            <input type="email" name="email" value="{{ old('email') }}" placeholder="Email" class="form-input">
+                                            <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Phone" class="form-input">
+                                        </div>
+                                        <textarea name="message" rows="3" placeholder="Your message *" required class="form-input resize-y">{{ old('message') }}</textarea>
+                                        <button type="submit" class="w-full btn-primary justify-center">Send Enquiry</button>
+                                    </form>
                                 </div>
                             @endauth
                         </div>

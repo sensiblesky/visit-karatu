@@ -1,2 +1,4 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Sitemap: https://jhoch-41-59-48-98.run.pinggy-free.link/sitemap.xml

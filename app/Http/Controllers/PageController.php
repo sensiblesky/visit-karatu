@@ -20,4 +20,9 @@ class PageController extends Controller
 
         return view('pages.about', compact('stats', 'categories'));
     }
+
+    public function districtCouncil()
+    {
+        return view('pages.district-council');
+    }
 }

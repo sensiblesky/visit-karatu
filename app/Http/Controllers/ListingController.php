@@ -54,6 +54,27 @@ class ListingController extends Controller
         ]);
     }
 
+    public function map()
+    {
+        $markers = Listing::published()
+            ->whereNotNull('latitude')->whereNotNull('longitude')
+            ->with(['category', 'location', 'coverImage'])
+            ->get()
+            ->map(fn ($l) => [
+                'name' => $l->name,
+                'slug' => $l->slug,
+                'category' => $l->category->name,
+                'location' => $l->location->name,
+                'price' => $l->price_amount ? '$' . number_format($l->price_amount) . ($l->price_unit ? ' / ' . $l->price_unit : '') : null,
+                'lat' => (float) $l->latitude,
+                'lng' => (float) $l->longitude,
+                'url' => route('listings.show', $l->slug),
+                'image' => $l->coverImage ? \Storage::url($l->coverImage->path) : '/images/placeholders/savanna.jpg',
+            ]);
+
+        return view('listings.map', compact('markers'));
+    }
+
     public function show(string $slug)
     {
         $listing = Listing::published()

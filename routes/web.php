@@ -9,26 +9,37 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SponsorPageController;
 use App\Http\Controllers\Stakeholder\ListingController as StakeholderListingController;
 use App\Http\Controllers\Admin\ListingController as AdminListingController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\SponsorController as AdminSponsorController;
+use App\Http\Controllers\Admin\SponsorApplicationController as AdminSponsorApplicationController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/district-council', [PageController::class, 'districtCouncil'])->name('district-council');
+Route::get('/sponsors', [SponsorPageController::class, 'index'])->name('sponsors.index');
+Route::post('/sponsors/apply', [SponsorPageController::class, 'apply'])->middleware('throttle:5,10')->name('sponsors.apply');
 Route::get('/listings', [ListingController::class, 'index'])->name('listings.index');
+Route::get('/map', [ListingController::class, 'map'])->name('listings.map');
 Route::get('/category/{slug}', [ListingController::class, 'byCategory'])->name('listings.category');
 Route::get('/listings/{slug}', [ListingController::class, 'show'])->name('listings.show');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+
+// Public, guest-friendly submissions (rate-limited against spam)
+Route::post('/listings/{listing}/reviews', [ReviewController::class, 'store'])->middleware('throttle:5,10')->name('reviews.store');
+Route::post('/listings/{listing}/enquire', [EnquiryController::class, 'store'])->middleware('throttle:6,10')->name('enquiries.store');
 
 // Auth required: favorites toggle
 Route::middleware('auth')->group(function () {
     Route::post('/favorites/{listing}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
-    Route::post('/listings/{listing}/enquire', [EnquiryController::class, 'store'])->name('enquiries.store');
     Route::post('/listings/{listing}/book', [BookingController::class, 'store'])->name('bookings.store');
 
     // Profile
@@ -65,6 +76,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Sponsor / partner management
     Route::resource('sponsors', AdminSponsorController::class)->except('show');
+
+    // Sponsor applications (become-a-sponsor submissions)
+    Route::get('/sponsor-applications', [AdminSponsorApplicationController::class, 'index'])->name('sponsor_applications.index');
+    Route::post('/sponsor-applications/{application}/approve', [AdminSponsorApplicationController::class, 'approve'])->name('sponsor_applications.approve');
+    Route::post('/sponsor-applications/{application}/reject', [AdminSponsorApplicationController::class, 'reject'])->name('sponsor_applications.reject');
+    Route::delete('/sponsor-applications/{application}', [AdminSponsorApplicationController::class, 'destroy'])->name('sponsor_applications.destroy');
 
     // Review moderation
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');

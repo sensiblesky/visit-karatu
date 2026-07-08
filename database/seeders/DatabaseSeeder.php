@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             ListingSeeder::class,
             SponsorSeeder::class,
             EventSeeder::class,
+            FcBavoisSeeder::class,
         ]);
     }
 }

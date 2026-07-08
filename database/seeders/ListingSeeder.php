@@ -247,6 +247,7 @@ class ListingSeeder extends Seeder
         ];
 
         foreach ($bulk as $i => $b) {
+            $loc = $locations->firstWhere('id', $locationIds[$i % count($locationIds)]);
             $listing = Listing::updateOrCreate(
                 ['slug' => Str::slug($b['name'])],
                 [
@@ -258,6 +259,8 @@ class ListingSeeder extends Seeder
                     'full_description' => $b['desc'] . "\n\nThis is a sample listing seeded for demonstration. Contact the operator for full details, availability and current pricing.",
                     'price_amount' => $b['price'],
                     'price_unit' => $b['unit'],
+                    'latitude' => $loc ? round($loc->latitude + (mt_rand(-200, 200) / 10000), 6) : null,
+                    'longitude' => $loc ? round($loc->longitude + (mt_rand(-200, 200) / 10000), 6) : null,
                     'status' => 'published',
                     'plan_tier' => $i % 4 === 0 ? 'featured' : 'basic',
                     'is_popular' => $i % 5 === 0,

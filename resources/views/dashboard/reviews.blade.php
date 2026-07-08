@@ -9,7 +9,7 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
             <div class="flex items-start justify-between mb-2">
                 <div>
-                    <span class="font-semibold text-gray-900">{{ $review->user->name }}</span>
+                    <span class="font-semibold text-gray-900">{{ $review->reviewer_name }}</span>
                     <span class="text-gray-400 text-sm ml-2">on {{ $review->listing->name }}</span>
                 </div>
                 <div class="flex items-center gap-2">

@@ -5,10 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="canonical" href="{{ url()->current() }}">
     <title>@yield('title', setting('site_name', 'Visit Karatu')) — {{ setting('site_tagline', 'Discover. Experience. Karatu.') }}</title>
     <meta name="description" content="@yield('meta_description', setting('hero_subtitle', 'Karatu is your gateway to Ngorongoro, Lake Manyara, Lake Eyasi and unforgettable cultural experiences.'))">
+
+    {{-- Open Graph / Twitter --}}
+    @php $ogImage = trim($__env->yieldContent('og_image')) ?: asset('images/placeholders/savanna.jpg'); @endphp
+    <meta property="og:site_name" content="{{ setting('site_name', 'Visit Karatu') }}">
+    <meta property="og:title" content="@yield('title', setting('site_name', 'Visit Karatu'))">
+    <meta property="og:description" content="@yield('meta_description', setting('hero_subtitle', 'Discover Karatu, Tanzania.'))">
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ $ogImage }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', setting('site_name', 'Visit Karatu'))">
+    <meta name="twitter:description" content="@yield('meta_description', setting('hero_subtitle', 'Discover Karatu, Tanzania.'))">
+    <meta name="twitter:image" content="{{ $ogImage }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    @stack('styles')
+    @stack('head')
 </head>
 <body class="font-sans bg-white text-gray-900">
 
@@ -43,13 +60,17 @@
                                 {{ $cat->name }}
                             </a>
                         @endforeach
+                        <div class="my-1 border-t border-gray-100"></div>
+                        <a href="{{ route('listings.map') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Map View</a>
+                        <a href="{{ route('district-council') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">District Council</a>
                     </div>
                 </div>
 
                 <a href="{{ route('listings.category', 'lodges-hotels') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Stay</a>
                 <a href="{{ route('listings.category', 'attractions') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Things to Do</a>
                 <a href="{{ route('events.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Events</a>
-                <a href="{{ route('about') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">About Karatu</a>
+                <a href="{{ route('sponsors.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Partners</a>
+                <a href="{{ route('about') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">About</a>
             </nav>
 
             {{-- Right actions --}}
@@ -105,6 +126,9 @@
             <a href="{{ route('listings.category', 'lodges-hotels') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Where to Stay</a>
             <a href="{{ route('listings.category', 'attractions') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Things to Do</a>
             <a href="{{ route('events.index') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Events</a>
+            <a href="{{ route('listings.map') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Map View</a>
+            <a href="{{ route('sponsors.index') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Partners & Sponsors</a>
+            <a href="{{ route('district-council') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">District Council</a>
             <a href="{{ route('about') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">About Karatu</a>
             @auth
                 <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
@@ -174,18 +198,17 @@
                         <li><a href="{{ route('listings.category', $cat->slug) }}" class="text-sm text-forest-300 hover:text-white transition">{{ $cat->name }}</a></li>
                     @endforeach
                     <li><a href="{{ route('events.index') }}" class="text-sm text-forest-300 hover:text-white transition">Events</a></li>
+                    <li><a href="{{ route('listings.map') }}" class="text-sm text-forest-300 hover:text-white transition">Map View</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">For Businesses</h4>
+                <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">More</h4>
                 <ul class="space-y-2.5">
-                    <li><a href="mailto:{{ setting('contact_email', 'info@visitkaratu.com') }}" class="text-sm text-forest-300 hover:text-white transition">List Your Business</a></li>
                     <li><a href="{{ route('about') }}" class="text-sm text-forest-300 hover:text-white transition">About Karatu</a></li>
-                    @auth
-                        @if(auth()->user()->isStakeholder() || auth()->user()->isAdmin())
-                            <li><a href="{{ route('dashboard.index') }}" class="text-sm text-forest-300 hover:text-white transition">Dashboard</a></li>
-                        @endif
-                    @endauth
+                    <li><a href="{{ route('sponsors.index') }}" class="text-sm text-forest-300 hover:text-white transition">Partners & Sponsors</a></li>
+                    <li><a href="{{ route('sponsors.index') }}#become-a-sponsor" class="text-sm text-forest-300 hover:text-white transition">Become a Sponsor</a></li>
+                    <li><a href="{{ route('district-council') }}" class="text-sm text-forest-300 hover:text-white transition">District Council</a></li>
+                    <li><a href="mailto:{{ setting('contact_email', 'info@visitkaratu.com') }}" class="text-sm text-forest-300 hover:text-white transition">List Your Business</a></li>
                 </ul>
             </div>
             <div>

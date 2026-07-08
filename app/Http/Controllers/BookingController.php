@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BookingReceived;
 use App\Models\Booking;
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -23,7 +25,11 @@ class BookingController extends Controller
         $data['amount'] = $listing->price_amount * ($data['adults'] + ($data['children'] * 0.5));
         $data['status'] = 'pending';
 
-        Booking::create($data);
+        $booking = Booking::create($data);
+
+        if ($to = $listing->email ?: optional($listing->user)->email ?: setting('contact_email')) {
+            Mail::to($to)->send(new BookingReceived($booking));
+        }
 
         return back()->with('success', 'Booking request submitted! The operator will confirm your availability shortly.');
     }

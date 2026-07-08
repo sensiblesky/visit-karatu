@@ -3,6 +3,22 @@
 @section('title', 'Visit Karatu')
 @section('meta_description', 'Karatu is your gateway to Ngorongoro, Lake Manyara, Lake Eyasi and unforgettable cultural experiences in northern Tanzania.')
 
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebSite',
+    'name' => setting('site_name', 'VisitKaratu'),
+    'url' => url('/'),
+    'potentialAction' => [
+        '@type' => 'SearchAction',
+        'target' => url('/listings') . '?search={search_term_string}',
+        'query-input' => 'required name=search_term_string',
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
+
 @section('content')
 
 {{-- ===== HERO ===== --}}

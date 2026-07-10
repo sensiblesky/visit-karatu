@@ -17,13 +17,13 @@
         <h1 class="text-2xl font-bold text-gray-900">News Archive</h1>
         <p class="text-sm text-gray-500 mt-1">Stories older than {{ \App\Models\Post::ARCHIVE_AFTER_DAYS }} days. Search headlines below.</p>
 
-        <form method="GET" action="{{ route('news.archive') }}" class="mt-5 flex gap-2 max-w-xl">
-            <div class="relative flex-1">
-                <svg class="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <form method="GET" action="{{ route('news.archive') }}" class="mt-5 flex flex-col sm:flex-row gap-2 max-w-xl">
+            <div class="relative flex-1 min-w-0">
+                <svg class="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 <input type="search" name="q" value="{{ $q }}" placeholder="Search old news…"
                        class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-forest-500 focus:ring-forest-500 text-sm">
             </div>
-            <button class="btn-primary px-6">Search</button>
+            <button class="btn-primary w-full sm:w-auto justify-center">Search</button>
         </form>
     </div>
 </div>

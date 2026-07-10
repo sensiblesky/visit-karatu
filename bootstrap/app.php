@@ -16,6 +16,18 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);
 
+        // Behind an SSL-terminating proxy/load balancer (production), trust the
+        // forwarded headers so Laravel knows the original request was HTTPS.
+        // Without this, generated URLs (e.g. form actions) use http://, and a
+        // POST then gets redirected http→https as GET → 405 Method Not Allowed.
+        $middleware->trustProxies(at: '*', headers:
+            Request::HEADER_X_FORWARDED_FOR |
+            Request::HEADER_X_FORWARDED_HOST |
+            Request::HEADER_X_FORWARDED_PORT |
+            Request::HEADER_X_FORWARDED_PROTO |
+            Request::HEADER_X_FORWARDED_AWS_ELB
+        );
+
         // Auto-detect visitor language + set security headers on every web request.
         $middleware->web(append: [
             \App\Http\Middleware\DetectLanguage::class,

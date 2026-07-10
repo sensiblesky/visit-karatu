@@ -22,29 +22,41 @@
     </div>
 </section>
 
-{{-- Sponsor grid by tier --}}
-<section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        @forelse($grouped as $tier => $items)
-            <div class="mb-12 last:mb-0">
-                <div class="flex items-center gap-4 mb-6">
-                    <h2 class="text-lg font-bold text-gray-900">{{ $tier }}</h2>
+{{-- Sponsor grid, graded by level --}}
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+        @forelse($grouped as $level => $items)
+            @php
+                $heading = $labels[$level] ?? ucfirst($level).' Sponsors';
+                $isPlatinum = $level === 'platinum';
+                $cols = $isPlatinum ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-3 lg:grid-cols-4';
+            @endphp
+            <div>
+                <div class="flex items-center gap-4 mb-8">
+                    @if($isPlatinum)<span class="text-[10px] font-bold uppercase tracking-widest bg-gray-900 text-white px-2.5 py-1 rounded-full">Platinum</span>@endif
+                    <h2 class="text-xl font-bold text-gray-900">{{ $heading }}</h2>
                     <div class="flex-1 h-px bg-gray-100"></div>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 {{ $cols }} gap-6 sm:gap-8">
                     @foreach($items as $sponsor)
-                        @php $tag = $sponsor->website_url ? 'a' : 'div'; @endphp
+                        @php
+                            // Sports partners get a rich detail page; others link out to their site.
+                            $href = $sponsor->is_sports ? route('partners.show', $sponsor) : $sponsor->website_url;
+                            $tag = $href ? 'a' : 'div';
+                            $external = ! $sponsor->is_sports && $sponsor->website_url;
+                        @endphp
                         <{{ $tag }}
-                            @if($sponsor->website_url) href="{{ $sponsor->website_url }}" target="_blank" rel="noopener nofollow" @endif
-                            class="group bg-gray-50 hover:bg-white border border-gray-100 hover:border-forest-200 rounded-2xl p-6 flex flex-col items-center justify-center text-center transition hover:shadow-md">
-                            <div class="h-20 flex items-center justify-center mb-3">
-                                @if($sponsor->logo_path)
-                                    <img src="{{ Storage::url($sponsor->logo_path) }}" alt="{{ $sponsor->name }}" class="max-h-20 max-w-full object-contain">
+                            @if($href) href="{{ $href }}" @if($external) target="_blank" rel="noopener nofollow" @endif @endif
+                            class="group bg-gray-50 hover:bg-white border border-gray-100 hover:border-forest-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center transition hover:shadow-md {{ $isPlatinum ? 'py-12' : '' }}">
+                            <div class="{{ $isPlatinum ? 'h-28' : 'h-20' }} flex items-center justify-center mb-4">
+                                @if($sponsor->logo_url)
+                                    <img src="{{ $sponsor->logo_url }}" alt="{{ $sponsor->name }}" class="{{ $isPlatinum ? 'max-h-28' : 'max-h-20' }} max-w-full object-contain">
                                 @else
                                     <span class="text-lg font-bold text-gray-300">{{ $sponsor->name }}</span>
                                 @endif
                             </div>
-                            <p class="text-sm font-semibold text-gray-800 group-hover:text-forest-700 transition">{{ $sponsor->name }}</p>
+                            <p class="{{ $isPlatinum ? 'text-base' : 'text-sm' }} font-semibold text-gray-800 group-hover:text-forest-700 transition">{{ $sponsor->name }}</p>
+                            @if($sponsor->tier)<p class="text-xs text-gray-400 mt-0.5">{{ $sponsor->tier }}</p>@endif
                         </{{ $tag }}>
                     @endforeach
                 </div>
@@ -55,6 +67,21 @@
     </div>
 </section>
 
+{{-- Sports partnerships callout (their logos live on the dedicated hub) --}}
+@if($hasSportsPartners)
+<section class="py-16 bg-forest-950 text-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-forest-300 text-sm font-semibold tracking-wide uppercase mb-2">On the world stage</p>
+        <h2 class="text-3xl font-bold mb-4">Sports Partnerships</h2>
+        <p class="text-white/80 max-w-2xl mx-auto leading-relaxed mb-7">
+            From FC Bavois to the region's football federations, Karatu is building partnerships that put the
+            district on the global sporting map. Meet the clubs and organisations behind them.
+        </p>
+        <a href="{{ route('sports-sponsorships') }}" class="btn-primary inline-flex">Explore Sports Sponsorships</a>
+    </div>
+</section>
+@endif
+
 {{-- Become a sponsor --}}
 <section id="become-a-sponsor" class="py-16 bg-gray-50">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,7 +91,7 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Become a Sponsor</h2>
                 <p class="text-gray-600 leading-relaxed mb-5">
                     Put your brand in front of thousands of travellers and locals discovering Karatu. Partner with us to
-                    support sustainable tourism, cultural heritage and grassroots football — and gain visibility across
+                    support sustainable tourism, cultural heritage and grassroots football, and gain visibility across
                     the site, events and the sports scene.
                 </p>
                 <ul class="space-y-2.5 text-sm text-gray-600">
@@ -101,9 +128,9 @@
                     </div>
                     <select name="tier" class="form-input">
                         <option value="">Preferred package (optional)</option>
-                        <option value="Official Partner" @selected(old('tier')==='Official Partner')>Official Partner</option>
-                        <option value="Gold Sponsor" @selected(old('tier')==='Gold Sponsor')>Gold Sponsor</option>
-                        <option value="Silver Sponsor" @selected(old('tier')==='Silver Sponsor')>Silver Sponsor</option>
+                        <option value="Platinum" @selected(old('tier')==='Platinum')>Platinum (front-page & key pages)</option>
+                        <option value="Gold" @selected(old('tier')==='Gold')>Gold</option>
+                        <option value="Silver" @selected(old('tier')==='Silver')>Silver</option>
                     </select>
                     <textarea name="message" rows="3" placeholder="Tell us a little about your organisation..." class="form-input resize-y">{{ old('message') }}</textarea>
                     <div>

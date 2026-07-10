@@ -12,14 +12,19 @@ class SponsorPageController extends Controller
 {
     public function index()
     {
-        // Group active sponsors by tier, preserving a sensible tier order.
-        $sponsors = Sponsor::active()->ordered()->get();
+        // Commercial/tourism sponsors, graded by level (Platinum → Gold → Silver).
+        // Sports partners live on their own hub (/sports-sponsorships) to avoid
+        // listing the same logos twice.
+        $sponsors = Sponsor::active()->where('is_sports', false)->byLevel()->get();
 
-        $order = ['Official Partner', 'Federation Partner', 'Football Partner', 'Official Sponsor', 'Gold Sponsor', 'Silver Sponsor'];
-        $grouped = $sponsors->groupBy(fn ($s) => $s->tier ?: 'Partner')
-            ->sortBy(fn ($group, $tier) => array_search($tier, $order) === false ? 99 : array_search($tier, $order));
+        $labels = ['platinum' => 'Platinum Partners', 'gold' => 'Gold Sponsors', 'silver' => 'Silver Sponsors'];
+        $grouped = $sponsors->groupBy(fn ($s) => $s->level ?: 'silver')
+            ->sortBy(fn ($group, $level) => array_search($level, Sponsor::LEVELS) === false ? 99 : array_search($level, Sponsor::LEVELS));
 
-        return view('pages.sponsors', compact('sponsors', 'grouped'));
+        // Show the sports callout only when there are sports partners to point at.
+        $hasSportsPartners = Sponsor::active()->sports()->exists();
+
+        return view('pages.sponsors', compact('sponsors', 'grouped', 'labels', 'hasSportsPartners'));
     }
 
     public function apply(Request $request)

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Karatu District Council')
-@section('meta_description', 'Karatu District Council — local government supporting tourism, culture and community development in the Karatu district of northern Tanzania.')
+@section('meta_description', 'Karatu District Council: local government supporting tourism, culture and community development in the Karatu district of northern Tanzania.')
 
 @section('content')
 
@@ -29,7 +29,7 @@
             <p>
                 Karatu District Council is the local government authority responsible for the Karatu district in the
                 Arusha Region of northern Tanzania. The council oversees planning, infrastructure, health, education,
-                agriculture and — importantly for visitors — the sustainable development of tourism across one of the
+                agriculture and, importantly for visitors, the sustainable development of tourism across one of the
                 country's most visited gateways to the Ngorongoro Conservation Area, Lake Eyasi and Lake Manyara.
             </p>
             <p>
@@ -46,7 +46,7 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">How the Council Supports Tourism</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach([
-                ['title' => 'Licensing & Standards', 'text' => 'Registers and supports local businesses — lodges, tour operators and cultural sites — helping maintain quality and safety standards for visitors.'],
+                ['title' => 'Licensing & Standards', 'text' => 'Registers and supports local businesses such as lodges, tour operators and cultural sites, helping maintain quality and safety standards for visitors.'],
                 ['title' => 'Community Development', 'text' => 'Reinvests tourism revenue into schools, health services, water and roads that serve residents across the district.'],
                 ['title' => 'Heritage & Environment', 'text' => 'Protects the district\'s landscapes and cultural heritage, promoting sustainable, community-based tourism.'],
             ] as $item)

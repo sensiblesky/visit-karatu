@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Visit Karatu')
-@section('meta_description', 'Karatu is your gateway to Ngorongoro, Lake Manyara, Lake Eyasi and unforgettable cultural experiences in northern Tanzania.')
+@section('meta_description', 'Karatu is your gateway to Ngorongoro, Lake Manyara, Lake Eyasi and the cultural experiences of northern Tanzania.')
 
 @push('head')
 <script type="application/ld+json">
@@ -54,7 +54,7 @@
                 {{ setting('hero_title', 'Discover the Heart of Northern Tanzania') }}
             </h1>
             <p class="text-base sm:text-lg md:text-xl text-white/80 mb-7 leading-relaxed max-w-xl">
-                {{ setting('hero_subtitle', 'Karatu is your gateway to Ngorongoro, Lake Manyara, Lake Eyasi and unforgettable cultural experiences.') }}
+                {{ setting('hero_subtitle', 'Karatu is your gateway to Ngorongoro, Lake Manyara, Lake Eyasi and the cultural life of northern Tanzania.') }}
             </p>
 
             {{-- Search bar: stacked & full-width on mobile, single pill on desktop --}}
@@ -272,12 +272,12 @@
                 <p class="text-forest-600 text-sm font-semibold tracking-wide uppercase mb-3">Northern Tanzania's Best Kept Secret</p>
                 <h2 class="section-title mb-6">Why Karatu?</h2>
                 <p class="text-gray-500 text-lg leading-relaxed mb-8">
-                    Sitting at 1,500m in the cool Ngorongoro highlands, Karatu is surrounded by world-class wildlife and deeply authentic cultural experiences — without the crowds of the main parks.
+                    Sitting at 1,500m in the cool Ngorongoro highlands, Karatu is surrounded by exceptional wildlife and genuine cultural experiences, without the crowds of the main parks.
                 </p>
                 <div class="space-y-5">
                     @foreach([
-                        ['svg' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>', 'title' => 'Ngorongoro Crater', 'desc' => "The world's largest intact volcanic caldera — home to the Big Five and 25,000+ animals."],
-                        ['svg' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>', 'title' => 'Hadzabe Bushwalk', 'desc' => "Meet one of Africa's last hunter-gatherer peoples at Lake Eyasi — a life-changing morning."],
+                        ['svg' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>', 'title' => 'Ngorongoro Crater', 'desc' => "The world's largest intact volcanic caldera, home to the Big Five and over 25,000 animals."],
+                        ['svg' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>', 'title' => 'Hadzabe Bushwalk', 'desc' => "Meet one of Africa's last hunter-gatherer peoples on a morning visit near Lake Eyasi."],
                         ['svg' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>', 'title' => 'Highland Farm Lodges', 'desc' => "Wake up to coffee plantation views and crisp mountain air in some of Tanzania's finest lodges."],
                     ] as $item)
                         <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-forest-50 transition">
@@ -360,37 +360,84 @@
 @if($sponsors->isNotEmpty())
 <section class="py-14 bg-white border-t border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-8">
+        <div class="text-center mb-10">
             <p class="text-forest-600 text-sm font-semibold tracking-wide uppercase mb-1.5">Proudly Supported By</p>
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Our Partners &amp; Sponsors</h2>
         </div>
 
-        {{-- Marquee: duplicated track scrolls continuously, pauses on hover, fades at edges --}}
-        <div class="marquee group relative">
-            <div class="marquee__track group-hover:[animation-play-state:paused]">
-                @foreach($sponsors->concat($sponsors) as $sponsor)
-                    @php
-                        $logo = $sponsor->logo_path ? Storage::url($sponsor->logo_path) : null;
-                        $tag = $sponsor->website_url ? 'a' : 'div';
-                    @endphp
-                    <{{ $tag }}
-                        @if($sponsor->website_url) href="{{ $sponsor->website_url }}" target="_blank" rel="noopener nofollow" @endif
-                        title="{{ $sponsor->name }}"
-                        class="shrink-0 flex items-center justify-center h-14 px-2"
-                        aria-hidden="{{ $loop->index >= $sponsors->count() ? 'true' : 'false' }}">
-                        @if($logo)
-                            <img loading="lazy" decoding="async" src="{{ $logo }}" alt="{{ $sponsor->name }}"
-                                 class="max-h-12 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition duration-300">
-                        @else
-                            <span class="text-base font-bold text-gray-300 whitespace-nowrap">{{ $sponsor->name }}</span>
-                        @endif
-                    </{{ $tag }}>
-                @endforeach
-            </div>
+        {{-- Larger, clickable logo cards (Platinum tier). Each links to the sponsor's site. --}}
+        <div class="flex flex-wrap items-center justify-center gap-6 sm:gap-8">
+            @foreach($sponsors as $sponsor)
+                @php $tag = $sponsor->website_url ? 'a' : 'div'; @endphp
+                <{{ $tag }}
+                    @if($sponsor->website_url) href="{{ $sponsor->website_url }}" target="_blank" rel="noopener nofollow" @endif
+                    title="{{ $sponsor->name }}"
+                    class="group flex items-center justify-center h-24 sm:h-28 w-44 sm:w-52 px-6 rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md hover:border-forest-200 transition">
+                    @if($sponsor->logo_url)
+                        <img loading="lazy" decoding="async" src="{{ $sponsor->logo_url }}" alt="{{ $sponsor->name }}"
+                             class="max-h-16 sm:max-h-20 w-auto object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition duration-300">
+                    @else
+                        <span class="text-base font-bold text-gray-400 text-center leading-tight">{{ $sponsor->name }}</span>
+                    @endif
+                </{{ $tag }}>
+            @endforeach
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="{{ route('sponsors.index') }}" class="text-sm font-semibold text-forest-700 hover:text-forest-900 inline-flex items-center gap-1.5">
+                See all partners &amp; sponsors
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
         </div>
     </div>
 </section>
 @endif
+
+{{-- ===== FAQ ===== --}}
+@php
+    $faqs = [
+        ['q' => 'Where is Karatu and how do I get there?', 'a' => 'Karatu is a highland town in northern Tanzania, about a 1.5-hour drive west of Arusha on the road to the Ngorongoro Conservation Area. Most visitors fly into Kilimanjaro International Airport (JRO) or Arusha, then drive.'],
+        ['q' => 'What is there to do in Karatu?', 'a' => 'Karatu is the gateway to Ngorongoro Crater, Lake Manyara and Lake Eyasi. You can go on safaris and day trips, visit coffee farms, meet the Iraqw, Hadzabe and Datoga communities, hike the highlands, and shop the lively gulio (mnada) markets.'],
+        ['q' => 'When is the best time to visit?', 'a' => 'Karatu is a year-round destination. The dry seasons (June–October and December–February) are best for wildlife viewing, while the green seasons bring lush scenery and fewer crowds.'],
+        ['q' => 'Where can I stay in Karatu?', 'a' => 'From luxury lodges and tented camps to farm stays and guesthouses. Browse the Stay section to compare options near Karatu town and the crater gate.'],
+        ['q' => 'How do I book a tour or lodge listed here?', 'a' => 'Visit Karatu is a directory. Use the enquiry form on any listing to contact the operator directly. Bookings, payment and cancellation are arranged with that business.'],
+    ];
+@endphp
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => collect($faqs)->map(fn ($f) => [
+        '@type' => 'Question',
+        'name' => $f['q'],
+        'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f['a']],
+    ])->all(),
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
+<section class="py-20 bg-white border-t border-gray-100">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <p class="text-forest-600 text-sm font-semibold tracking-wide uppercase mb-1.5">Good to know</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Frequently asked questions</h2>
+        </div>
+        <div class="divide-y divide-gray-100 border-y border-gray-100">
+            @foreach($faqs as $faq)
+                <div x-data="{ open: false }" class="py-1">
+                    <button @click="open = !open" :aria-expanded="open"
+                            class="w-full flex items-center justify-between text-left py-4 gap-4">
+                        <span class="text-base font-semibold text-gray-900">{{ $faq['q'] }}</span>
+                        <svg class="w-5 h-5 text-forest-600 shrink-0 transition-transform" :class="open && 'rotate-45'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    </button>
+                    <div x-show="open" x-transition x-cloak>
+                        <p class="text-sm text-gray-600 leading-relaxed pb-5">{{ $faq['a'] }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
 
 {{-- ===== CTA BANNER ===== --}}
 <section class="relative py-24 overflow-hidden">

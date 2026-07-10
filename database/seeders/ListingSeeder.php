@@ -85,7 +85,7 @@ class ListingSeeder extends Seeder
                 'name' => 'Ngorongoro Crater Full Day Tour',
                 'slug' => 'ngorongoro-crater-full-day-tour',
                 'short_description' => 'A full-day descent into the world\'s largest intact volcanic caldera, home to over 25,000 animals.',
-                'full_description' => "Experience the 8th Wonder of the World on this full-day guided safari into the Ngorongoro Crater. Descend 600 metres into the caldera floor and encounter the Big Five — lion, elephant, buffalo, leopard, and rhino — along with wildebeest, zebra, hippo, and flamingos on the soda lake.\n\nYour expert Swahili/English speaking guide will share knowledge of the crater's unique ecosystem and the Maasai community who live alongside wildlife on the crater rim. Lunch is served at the picnic site on the crater floor with views across the caldera.",
+                'full_description' => "Experience the 8th Wonder of the World on this full-day guided safari into the Ngorongoro Crater. Descend 600 metres into the caldera floor and encounter the Big Five, lion, elephant, buffalo, leopard, and rhino, along with wildebeest, zebra, hippo, and flamingos on the soda lake.\n\nYour expert Swahili/English speaking guide will share knowledge of the crater's unique ecosystem and the Maasai community who live alongside wildlife on the crater rim. Lunch is served at the picnic site on the crater floor with views across the caldera.",
                 'price_amount' => 120.00,
                 'price_unit' => 'per person',
                 'status' => 'published',
@@ -112,8 +112,8 @@ class ListingSeeder extends Seeder
                 'location_id' => $locations['lake-eyasi-area']->id,
                 'name' => 'Lake Eyasi Hadzabe Bushwalk',
                 'slug' => 'lake-eyasi-hadzabe-bushwalk',
-                'short_description' => 'Spend a morning with the Hadzabe tribe — one of the last remaining hunter-gatherer peoples in Africa.',
-                'full_description' => "Join one of East Africa's most unique cultural experiences: a dawn bushwalk with the Hadzabe, one of the last remaining hunter-gatherer tribes in Africa. Live like they have for 10,000 years — tracking game on foot, gathering wild berries, and learning to use traditional bow and arrow.\n\nAfternoon: visit the Datoga blacksmiths on the shores of Lake Eyasi and watch them craft iron jewellery and arrowheads using techniques unchanged for centuries. Flamingos feed in the shallows as you explore the lake edge.",
+                'short_description' => 'Spend a morning with the Hadzabe tribe, one of the last remaining hunter-gatherer peoples in Africa.',
+                'full_description' => "Join one of East Africa's most unique cultural experiences: a dawn bushwalk with the Hadzabe, one of the last remaining hunter-gatherer tribes in Africa. Live like they have for 10,000 years, tracking game on foot, gathering wild berries, and learning to use traditional bow and arrow.\n\nAfternoon: visit the Datoga blacksmiths on the shores of Lake Eyasi and watch them craft iron jewellery and arrowheads using techniques unchanged for centuries. Flamingos feed in the shallows as you explore the lake edge.",
                 'price_amount' => 75.00,
                 'price_unit' => 'per person',
                 'status' => 'published',
@@ -131,7 +131,7 @@ class ListingSeeder extends Seeder
                 'includes' => ['Transport from Karatu', 'Local guide and translator', 'Hadzabe village visit permit', 'Datoga blacksmith visit', 'Picnic lunch'],
                 'excludes' => ['Gratuities (discretionary)', 'Personal purchases from artisans'],
                 'itinerary' => [
-                    ['day_label' => 'Day 01', 'description' => '05:00 Depart Karatu hotels. 06:30 Arrive at Hadzabe camp for dawn hunt. 09:00 Return to camp — traditional meal preparation. 11:00 Drive to Lake Eyasi shore for Datoga blacksmith visit. 13:00 Picnic lunch on the lake. 15:00 Return to Karatu.', 'sort_order' => 1],
+                    ['day_label' => 'Day 01', 'description' => '05:00 Depart Karatu hotels. 06:30 Arrive at Hadzabe camp for dawn hunt. 09:00 Return to camp, traditional meal preparation. 11:00 Drive to Lake Eyasi shore for Datoga blacksmith visit. 13:00 Picnic lunch on the lake. 15:00 Return to Karatu.', 'sort_order' => 1],
                 ],
             ],
             [
@@ -198,7 +198,7 @@ class ListingSeeder extends Seeder
 
             $listing = Listing::updateOrCreate(['slug' => $data['slug']], $data);
 
-            // Amenities (filter by slug — Eloquent Collection::only() matches by id, not key)
+            // Amenities (filter by slug, Eloquent Collection::only() matches by id, not key)
             $amenityIds = $amenities->whereIn('slug', $amenityKeys)->pluck('id');
             $listing->amenities()->sync($amenityIds);
 

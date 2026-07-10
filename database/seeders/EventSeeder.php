@@ -23,7 +23,7 @@ class EventSeeder extends Seeder
             ],
             [
                 'title' => 'Ngorongoro Highlands Coffee Harvest',
-                'description' => 'Join local estates for the annual coffee harvest — pick, pulp and roast your own beans, then taste the highland brew straight from the source.',
+                'description' => 'Join local estates for the annual coffee harvest, pick, pulp and roast your own beans, then taste the highland brew straight from the source.',
                 'location' => 'karatu-town',
                 'starts_at' => now()->addDays(20)->setTime(8, 0),
                 'ends_at' => now()->addDays(20)->setTime(13, 0),
@@ -55,7 +55,7 @@ class EventSeeder extends Seeder
             ],
             [
                 'title' => 'Crater Rim Trail Run',
-                'description' => 'A community 10K and 21K trail run along the forested Ngorongoro crater rim. All abilities welcome — register at the Karatu sports club.',
+                'description' => 'A community 10K and 21K trail run along the forested Ngorongoro crater rim. All abilities welcome, register at the Karatu sports club.',
                 'location' => 'near-crater-gate',
                 'starts_at' => now()->addDays(45)->setTime(6, 0),
                 'ends_at' => now()->addDays(45)->setTime(11, 0),

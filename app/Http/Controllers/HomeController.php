@@ -15,7 +15,13 @@ class HomeController extends Controller
 
         $locations = Location::all();
 
-        $sponsors = Sponsor::active()->ordered()->get();
+        // Front-page placement rule: show Platinum partners only; if none are
+        // graded Platinum yet, fall back to all active sponsors so the strip
+        // is never empty.
+        $sponsors = Sponsor::active()->platinum()->byLevel()->get();
+        if ($sponsors->isEmpty()) {
+            $sponsors = Sponsor::active()->byLevel()->get();
+        }
 
         $featured = Listing::published()
             ->with(['category', 'location', 'coverImage'])

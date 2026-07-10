@@ -26,9 +26,13 @@ class SponsorController extends Controller
     {
         $data = $this->validateSponsor($request);
         $data['is_active'] = $request->boolean('is_active');
+        $data['is_sports'] = $request->boolean('is_sports');
 
         if ($request->hasFile('logo')) {
             $data['logo_path'] = $request->file('logo')->store('sponsors', 'public');
+        }
+        if ($request->hasFile('hero_image')) {
+            $data['hero_image'] = $request->file('hero_image')->store('sponsors', 'public');
         }
 
         Sponsor::create($data);
@@ -45,12 +49,19 @@ class SponsorController extends Controller
     {
         $data = $this->validateSponsor($request);
         $data['is_active'] = $request->boolean('is_active');
+        $data['is_sports'] = $request->boolean('is_sports');
 
         if ($request->hasFile('logo')) {
             if ($sponsor->logo_path) {
                 Storage::disk('public')->delete($sponsor->logo_path);
             }
             $data['logo_path'] = $request->file('logo')->store('sponsors', 'public');
+        }
+        if ($request->hasFile('hero_image')) {
+            if ($sponsor->hero_image) {
+                Storage::disk('public')->delete($sponsor->hero_image);
+            }
+            $data['hero_image'] = $request->file('hero_image')->store('sponsors', 'public');
         }
 
         $sponsor->update($data);
@@ -74,8 +85,12 @@ class SponsorController extends Controller
             'name' => 'required|string|max:255',
             'website_url' => 'nullable|url|max:255',
             'tier' => 'nullable|string|max:100',
+            'level' => 'required|in:'.implode(',', Sponsor::LEVELS),
+            'summary' => 'nullable|string|max:500',
+            'body' => 'nullable|string',
             'sort_order' => 'required|integer|min:0',
             'logo' => 'nullable|image|max:2048',
+            'hero_image' => 'nullable|image|max:4096',
         ]);
     }
 }

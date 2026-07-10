@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Events in Karatu')
-@section('meta_description', "What's happening in and around Karatu — festivals, markets, and cultural events.")
+@section('meta_description', "What's happening in and around Karatu: festivals, markets, and cultural events.")
 
 @section('content')
 
@@ -26,7 +26,7 @@
                     <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
                 <h3 class="text-lg font-semibold text-gray-700 mb-2">No upcoming events</h3>
-                <p class="text-gray-400 text-sm">Check back soon — new events are added regularly.</p>
+                <p class="text-gray-400 text-sm">Check back soon. New events are added regularly.</p>
             </div>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

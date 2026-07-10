@@ -9,7 +9,7 @@
     {{-- Status notice --}}
     <div class="bg-{{ $listing->status === 'published' ? 'forest' : ($listing->status === 'rejected' ? 'red' : 'yellow') }}-50 border border-{{ $listing->status === 'published' ? 'forest' : ($listing->status === 'rejected' ? 'red' : 'yellow') }}-200 rounded-2xl px-5 py-3.5 text-sm flex items-center gap-2.5">
         <span class="font-semibold capitalize">{{ $listing->status }}</span>
-        <span class="text-gray-500">— saving changes re-submits this listing for admin approval.</span>
+        <span class="text-gray-500">Saving changes re-submits this listing for admin approval.</span>
     </div>
 
     <form method="POST" action="{{ route('dashboard.listings.update', $listing) }}" enctype="multipart/form-data" class="space-y-6">

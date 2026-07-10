@@ -6,8 +6,13 @@
 
     <div class="grid grid-cols-2 gap-4">
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Tier / Label</label>
-            <input type="text" name="tier" value="{{ old('tier', $sponsor->tier) }}" placeholder="Official Partner, Gold, Silver..." class="form-input">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Grade / Level *</label>
+            <select name="level" class="form-input">
+                @foreach(\App\Models\Sponsor::LEVELS as $lvl)
+                    <option value="{{ $lvl }}" @selected(old('level', $sponsor->level ?? 'silver') === $lvl)>{{ ucfirst($lvl) }}</option>
+                @endforeach
+            </select>
+            <p class="text-xs text-gray-400 mt-1">Only <strong>Platinum</strong> appears on the homepage &amp; key pages.</p>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Sort Order *</label>
@@ -16,8 +21,40 @@
     </div>
 
     <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tier / Role Label</label>
+        <input type="text" name="tier" value="{{ old('tier', $sponsor->tier) }}" placeholder="e.g. Sleeve Sponsor, Federation Partner, Football Partner..." class="form-input">
+        <p class="text-xs text-gray-400 mt-1">The descriptive label shown above the name (Visit-Rwanda style).</p>
+    </div>
+
+    <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
         <input type="url" name="website_url" value="{{ old('website_url', $sponsor->website_url) }}" placeholder="https://..." class="form-input">
+    </div>
+
+    <div class="border-t border-gray-100 pt-5">
+        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+            <input type="checkbox" name="is_sports" value="1" {{ old('is_sports', $sponsor->is_sports) ? 'checked' : '' }}
+                   class="rounded text-forest-600 focus:ring-forest-500">
+            Sports partner (show on the Sports Sponsorships page with a detail page)
+        </label>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Summary <span class="text-gray-400 font-normal">(one line)</span></label>
+                <input type="text" name="summary" value="{{ old('summary', $sponsor->summary) }}" maxlength="500" class="form-input">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">About the partnership <span class="text-gray-400 font-normal">(detail page body)</span></label>
+                <textarea name="body" rows="6" class="form-input">{{ old('body', $sponsor->body) }}</textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Hero / feature image</label>
+                @if($sponsor->hero_image_url)
+                    <img src="{{ $sponsor->hero_image_url }}" alt="" class="mb-2 w-full h-32 object-cover rounded-xl">
+                @endif
+                <input type="file" name="hero_image" accept="image/*"
+                       class="text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-forest-50 file:text-forest-700 hover:file:bg-forest-100">
+            </div>
+        </div>
     </div>
 
     <div>

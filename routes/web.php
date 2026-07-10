@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
@@ -18,19 +19,35 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\SponsorController as AdminSponsorController;
 use App\Http\Controllers\Admin\SponsorApplicationController as AdminSponsorApplicationController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/district-council', [PageController::class, 'districtCouncil'])->name('district-council');
+Route::get('/things-to-do', [PageController::class, 'thingsToDo'])->name('things-to-do');
+Route::post('/newsletter', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->middleware('throttle:5,10')->name('newsletter.subscribe');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 Route::get('/sponsors', [SponsorPageController::class, 'index'])->name('sponsors.index');
 Route::post('/sponsors/apply', [SponsorPageController::class, 'apply'])->middleware('throttle:5,10')->name('sponsors.apply');
+
+// Investment + Sports Sponsorships (Visit Rwanda style)
+Route::get('/invest', [\App\Http\Controllers\PartnershipController::class, 'invest'])->name('invest');
+Route::get('/sports-sponsorships', [\App\Http\Controllers\PartnershipController::class, 'sportsIndex'])->name('sports-sponsorships');
+Route::get('/partners/{sponsor}', [\App\Http\Controllers\PartnershipController::class, 'show'])->name('partners.show');
 Route::get('/listings', [ListingController::class, 'index'])->name('listings.index');
 Route::get('/map', [ListingController::class, 'map'])->name('listings.map');
 Route::get('/category/{slug}', [ListingController::class, 'byCategory'])->name('listings.category');
 Route::get('/listings/{slug}', [ListingController::class, 'show'])->name('listings.show');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
+
+// News & media
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/archive', [NewsController::class, 'archive'])->name('news.archive');
+Route::get('/videos', [NewsController::class, 'videos'])->name('news.videos');
+Route::get('/news/{post}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
 // Public, guest-friendly submissions (rate-limited against spam)
@@ -73,6 +90,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Category management (incl. per-category tab visibility)
     Route::resource('categories', AdminCategoryController::class)->except('show');
+
+    // News / posts management + editorial workflow
+    Route::resource('posts', AdminPostController::class)->except('show');
+    Route::post('/posts/{post}/approve', [AdminPostController::class, 'approve'])->name('posts.approve');
+    Route::post('/posts/{post}/reject', [AdminPostController::class, 'reject'])->name('posts.reject');
+    Route::post('/posts/{post}/archive', [AdminPostController::class, 'archive'])->name('posts.archive');
 
     // Sponsor / partner management
     Route::resource('sponsors', AdminSponsorController::class)->except('show');

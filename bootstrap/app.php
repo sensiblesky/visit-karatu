@@ -15,6 +15,19 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);
+
+        // Auto-detect visitor language + set security headers on every web request.
+        $middleware->web(append: [
+            \App\Http\Middleware\DetectLanguage::class,
+            \App\Http\Middleware\SecurityHeaders::class,
+        ]);
+
+        // Google Translate reads these cookies with client-side JS, so they must
+        // not be Laravel-encrypted.
+        $middleware->encryptCookies(except: [
+            'googtrans',
+            'vk_lang_seen',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

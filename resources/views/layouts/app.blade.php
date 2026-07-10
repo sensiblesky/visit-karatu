@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <link rel="canonical" href="{{ url()->current() }}">
-    <title>@yield('title', setting('site_name', 'Visit Karatu')) — {{ setting('site_tagline', 'Discover. Experience. Karatu.') }}</title>
+    <title>@yield('title', setting('site_name', 'Visit Karatu')) | {{ setting('site_tagline', 'Discover. Experience. Karatu.') }}</title>
     <meta name="description" content="@yield('meta_description', setting('hero_subtitle', 'Karatu is your gateway to Ngorongoro, Lake Manyara, Lake Eyasi and unforgettable cultural experiences.'))">
 
     {{-- Open Graph / Twitter --}}
@@ -24,10 +24,26 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    <style>
+        /* Visible keyboard focus for accessibility (WCAG 2.4.7) */
+        a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
+        input:focus-visible, select:focus-visible, textarea:focus-visible {
+            outline: 2px solid #166534; outline-offset: 2px; border-radius: 4px;
+        }
+        /* Skip-to-content link (WCAG 2.4.1) — hidden until focused */
+        .skip-link {
+            position: absolute; left: 1rem; top: -3rem; z-index: 100;
+            background: #166534; color: #fff; padding: 0.6rem 1rem; border-radius: 0.5rem;
+            font-size: 0.875rem; font-weight: 600; transition: top 0.15s ease;
+        }
+        .skip-link:focus { top: 1rem; }
+    </style>
     @stack('styles')
     @stack('head')
 </head>
 <body class="font-sans bg-white text-gray-900">
+
+<a href="#main" class="skip-link">Skip to content</a>
 
 {{-- ===== NAVBAR ===== --}}
 <header x-data="{ mobileOpen: false, scrolled: false }"
@@ -46,8 +62,10 @@
             <nav class="hidden lg:flex items-center gap-1">
                 <a href="{{ route('home') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Home</a>
 
+                {{-- Explore dropdown --}}
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" @click.away="open = false"
+                            :aria-expanded="open" aria-haspopup="true"
                             class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-1">
                         Explore
                         <svg class="w-4 h-4 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -61,20 +79,100 @@
                             </a>
                         @endforeach
                         <div class="my-1 border-t border-gray-100"></div>
+                        <a href="{{ route('things-to-do') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Things to Do</a>
                         <a href="{{ route('listings.map') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Map View</a>
-                        <a href="{{ route('district-council') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">District Council</a>
+                        <a href="{{ route('events.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Events</a>
                     </div>
                 </div>
 
                 <a href="{{ route('listings.category', 'lodges-hotels') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Stay</a>
-                <a href="{{ route('listings.category', 'attractions') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Things to Do</a>
-                <a href="{{ route('events.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Events</a>
-                <a href="{{ route('sponsors.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">Partners</a>
-                <a href="{{ route('about') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50">About</a>
+
+                {{-- News dropdown --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open" @click.away="open = false"
+                            :aria-expanded="open" aria-haspopup="true"
+                            class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-1">
+                        News
+                        <svg class="w-4 h-4 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="open" x-transition x-cloak
+                         class="absolute top-full left-0 mt-1 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                        <a href="{{ route('news.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Latest News</a>
+                        <a href="{{ route('news.videos') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Videos &amp; Live</a>
+                        <a href="{{ route('news.archive') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Archive</a>
+                    </div>
+                </div>
+
+                {{-- Partner dropdown --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open" @click.away="open = false"
+                            :aria-expanded="open" aria-haspopup="true"
+                            class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-1">
+                        Partner
+                        <svg class="w-4 h-4 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="open" x-transition x-cloak
+                         class="absolute top-full left-0 mt-1 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                        <a href="{{ route('invest') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Invest in Karatu</a>
+                        <a href="{{ route('sports-sponsorships') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Sports Sponsorships</a>
+                        <a href="{{ route('sponsors.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Partners &amp; Sponsors</a>
+                        <div class="my-1 border-t border-gray-100"></div>
+                        <a href="{{ route('sponsors.index') }}#become-a-sponsor" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Become a Sponsor</a>
+                    </div>
+                </div>
+
+                {{-- About dropdown --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open" @click.away="open = false"
+                            :aria-expanded="open" aria-haspopup="true"
+                            class="nav-link px-3 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-1">
+                        About
+                        <svg class="w-4 h-4 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="open" x-transition x-cloak
+                         class="absolute top-full left-0 mt-1 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                        <a href="{{ route('about') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">About Karatu</a>
+                        <a href="{{ route('district-council') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">District Council</a>
+                    </div>
+                </div>
             </nav>
 
             {{-- Right actions --}}
             <div class="flex items-center gap-2">
+                @php
+                    $vkLanguages = ['en' => 'English', 'sw' => 'Kiswahili', 'fr' => 'Français', 'de' => 'Deutsch'];
+                    $vkCurrent = 'en';
+                    if (($gt = request()->cookie('googtrans')) && preg_match('~/en/(\w+)~', $gt, $m) && isset($vkLanguages[$m[1]])) {
+                        $vkCurrent = $m[1];
+                    }
+                @endphp
+
+                {{-- Personalized language menu (drives Google Translate under the hood) --}}
+                <div x-data="{ open: false }" class="relative notranslate hidden sm:block">
+                    <button @click="open = !open" @click.away="open = false"
+                            :aria-expanded="open" aria-haspopup="true" aria-label="Change language"
+                            class="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                        <span class="font-medium">{{ strtoupper($vkCurrent) }}</span>
+                        <svg class="w-3.5 h-3.5 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="open" x-transition x-cloak
+                         class="absolute right-0 top-full mt-2 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                        @foreach($vkLanguages as $code => $label)
+                            <button type="button" onclick="vkSetLanguage('{{ $code }}')"
+                                    class="flex items-center justify-between w-full text-left px-4 py-2.5 text-sm hover:bg-forest-50 transition-colors {{ $vkCurrent === $code ? 'text-forest-700 font-semibold' : 'text-gray-700' }}">
+                                {{ $label }}
+                                @if($vkCurrent === $code)
+                                    <svg class="w-4 h-4 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                @endif
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Hidden Google Translate engine (widget UI is fully suppressed via CSS) --}}
+                <div id="google_translate_element" aria-hidden="true"></div>
+
                 @auth
                     @if(auth()->user()->isStakeholder() || auth()->user()->isAdmin())
                         <a href="{{ route('dashboard.index') }}"
@@ -91,6 +189,7 @@
                     @endif
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open" @click.away="open = false"
+                                :aria-expanded="open" aria-haspopup="true" aria-label="Account menu"
                                 class="w-9 h-9 rounded-full bg-forest-700 text-white text-sm font-bold flex items-center justify-center hover:bg-forest-800 transition">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </button>
@@ -110,7 +209,7 @@
                 @endauth
 
                 {{-- Mobile menu toggle --}}
-                <button @click="mobileOpen = !mobileOpen" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition">
+                <button @click="mobileOpen = !mobileOpen" :aria-expanded="mobileOpen" aria-label="Toggle menu" aria-controls="mobile-menu" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition">
                     <svg x-show="!mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     <svg x-show="mobileOpen" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
@@ -119,17 +218,82 @@
     </div>
 
     {{-- Mobile menu --}}
-    <div x-show="mobileOpen" x-transition x-cloak class="lg:hidden border-t border-gray-100 bg-white">
+    <div id="mobile-menu" x-show="mobileOpen" x-transition x-cloak class="lg:hidden border-t border-gray-100 bg-white">
         <div class="px-4 py-4 space-y-1">
-            <a href="{{ route('home') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Home</a>
-            <a href="{{ route('listings.index') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">All Listings</a>
-            <a href="{{ route('listings.category', 'lodges-hotels') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Where to Stay</a>
-            <a href="{{ route('listings.category', 'attractions') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Things to Do</a>
-            <a href="{{ route('events.index') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Events</a>
-            <a href="{{ route('listings.map') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Map View</a>
-            <a href="{{ route('sponsors.index') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">Partners & Sponsors</a>
-            <a href="{{ route('district-council') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">District Council</a>
-            <a href="{{ route('about') }}" class="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700">About Karatu</a>
+            @php
+                $mLink = 'block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700';
+                $mSub = 'block pl-8 pr-4 py-2 text-sm text-gray-600 rounded-xl hover:bg-forest-50 hover:text-forest-700';
+                $mGroup = 'w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-forest-50 hover:text-forest-700';
+            @endphp
+            <a href="{{ route('home') }}" class="{{ $mLink }}">Home</a>
+
+            {{-- Explore --}}
+            <div x-data="{ open: false }">
+                <button @click="open = !open" :aria-expanded="open" class="{{ $mGroup }}">
+                    Explore
+                    <svg class="w-4 h-4 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="open" x-transition x-cloak>
+                    @foreach(\App\Models\Category::orderBy('sort_order')->get() as $cat)
+                        <a href="{{ route('listings.category', $cat->slug) }}" class="{{ $mSub }}">{{ $cat->name }}</a>
+                    @endforeach
+                    <a href="{{ route('things-to-do') }}" class="{{ $mSub }}">Things to Do</a>
+                    <a href="{{ route('listings.map') }}" class="{{ $mSub }}">Map View</a>
+                    <a href="{{ route('events.index') }}" class="{{ $mSub }}">Events</a>
+                </div>
+            </div>
+
+            <a href="{{ route('listings.category', 'lodges-hotels') }}" class="{{ $mLink }}">Stay</a>
+
+            {{-- News --}}
+            <div x-data="{ open: false }">
+                <button @click="open = !open" :aria-expanded="open" class="{{ $mGroup }}">
+                    News
+                    <svg class="w-4 h-4 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="open" x-transition x-cloak>
+                    <a href="{{ route('news.index') }}" class="{{ $mSub }}">Latest News</a>
+                    <a href="{{ route('news.videos') }}" class="{{ $mSub }}">Videos & Live</a>
+                    <a href="{{ route('news.archive') }}" class="{{ $mSub }}">Archive</a>
+                </div>
+            </div>
+
+            {{-- Partner --}}
+            <div x-data="{ open: false }">
+                <button @click="open = !open" :aria-expanded="open" class="{{ $mGroup }}">
+                    Partner
+                    <svg class="w-4 h-4 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="open" x-transition x-cloak>
+                    <a href="{{ route('invest') }}" class="{{ $mSub }}">Invest in Karatu</a>
+                    <a href="{{ route('sports-sponsorships') }}" class="{{ $mSub }}">Sports Sponsorships</a>
+                    <a href="{{ route('sponsors.index') }}" class="{{ $mSub }}">Partners & Sponsors</a>
+                    <a href="{{ route('sponsors.index') }}#become-a-sponsor" class="{{ $mSub }}">Become a Sponsor</a>
+                </div>
+            </div>
+
+            {{-- About --}}
+            <div x-data="{ open: false }">
+                <button @click="open = !open" :aria-expanded="open" class="{{ $mGroup }}">
+                    About
+                    <svg class="w-4 h-4 transition-transform" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div x-show="open" x-transition x-cloak>
+                    <a href="{{ route('about') }}" class="{{ $mSub }}">About Karatu</a>
+                    <a href="{{ route('district-council') }}" class="{{ $mSub }}">District Council</a>
+                </div>
+            </div>
+
+            {{-- Language --}}
+            <div class="pt-3 mt-2 border-t border-gray-100 notranslate">
+                <p class="px-4 text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Language</p>
+                <div class="grid grid-cols-2 gap-1">
+                    @foreach($vkLanguages as $code => $label)
+                        <button type="button" onclick="vkSetLanguage('{{ $code }}')"
+                                class="text-left px-4 py-2 text-sm rounded-xl hover:bg-forest-50 {{ $vkCurrent === $code ? 'text-forest-700 font-semibold' : 'text-gray-700' }}">{{ $label }}</button>
+                    @endforeach
+                </div>
+            </div>
             @auth
                 <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
                     <a href="{{ route('dashboard.index') }}" class="btn-outline text-sm py-2.5 text-center">Dashboard</a>
@@ -139,6 +303,39 @@
         </div>
     </div>
 </header>
+
+{{-- ===== BREAKING NEWS TICKER ===== --}}
+@php $breakingNews = \App\Models\Post::breaking()->latestFirst()->limit(6)->get(); @endphp
+@if($breakingNews->isNotEmpty())
+    <div x-data="{ show: true }" x-show="show" class="bg-red-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-4 h-11">
+                <span class="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider shrink-0">
+                    <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> Breaking
+                </span>
+                <div class="flex-1 overflow-hidden">
+                    <div class="flex items-center gap-10 whitespace-nowrap animate-[ticker_30s_linear_infinite] hover:[animation-play-state:paused]">
+                        @foreach($breakingNews as $bn)
+                            <a href="{{ route('news.show', $bn) }}" class="text-sm font-medium hover:underline shrink-0">{{ $bn->title }}</a>
+                            <span class="text-white/40 shrink-0">•</span>
+                        @endforeach
+                        {{-- duplicate for seamless loop --}}
+                        @foreach($breakingNews as $bn)
+                            <a href="{{ route('news.show', $bn) }}" class="text-sm font-medium hover:underline shrink-0" aria-hidden="true">{{ $bn->title }}</a>
+                            <span class="text-white/40 shrink-0">•</span>
+                        @endforeach
+                    </div>
+                </div>
+                <button @click="show = false" class="shrink-0 opacity-70 hover:opacity-100" aria-label="Dismiss">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    @push('styles')
+    <style>@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }</style>
+    @endpush
+@endif
 
 {{-- Flash messages --}}
 @if(session('success'))
@@ -157,7 +354,7 @@
     </div>
 @endif
 
-<main>
+<main id="main" tabindex="-1">
     {{-- Supports both @extends('layouts.app') pages (@yield) and Breeze's
          <x-app-layout> component pages such as the profile page ($slot). --}}
     @yield('content')
@@ -166,6 +363,23 @@
 
 {{-- ===== FOOTER ===== --}}
 <footer class="bg-forest-950 text-white">
+    {{-- Newsletter --}}
+    <div class="border-b border-forest-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="max-w-md">
+                <h3 class="text-lg font-bold text-white mb-1">Get Karatu news in your inbox</h3>
+                <p class="text-sm text-forest-300">New stories, events and travel tips. No spam.</p>
+            </div>
+            <form method="POST" action="{{ route('newsletter.subscribe') }}" class="flex gap-2 w-full md:w-auto md:min-w-[26rem]">
+                @csrf
+                <input type="text" name="company" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
+                <label for="nl_email" class="sr-only">Email address</label>
+                <input id="nl_email" type="email" name="email" required placeholder="you@email.com"
+                       class="flex-1 rounded-xl border-0 text-gray-900 px-4 py-3 text-sm focus:ring-2 focus:ring-forest-400">
+                <button class="bg-white text-forest-900 font-semibold px-6 rounded-xl hover:bg-forest-50 transition whitespace-nowrap">Subscribe</button>
+            </form>
+        </div>
+    </div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
             <div class="lg:col-span-1">
@@ -232,12 +446,70 @@
         <div class="border-t border-forest-900 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-forest-500">
             <span>&copy; {{ date('Y') }} {{ setting('site_name', 'VisitKaratu') }}. All rights reserved.</span>
             <div class="flex gap-6">
-                <a href="#" class="hover:text-forest-300 transition">Privacy Policy</a>
-                <a href="#" class="hover:text-forest-300 transition">Terms of Use</a>
+                <a href="{{ route('privacy') }}" class="hover:text-forest-300 transition">Privacy Policy</a>
+                <a href="{{ route('terms') }}" class="hover:text-forest-300 transition">Terms of Use</a>
             </div>
         </div>
     </div>
 </footer>
+
+{{-- Google Translate engine — UI fully hidden; driven by our own language menu --}}
+<style>
+    /* Suppress every part of Google's own widget & top banner */
+    #google_translate_element { position: absolute; left: -9999px; height: 0; overflow: hidden; }
+    .goog-te-banner-frame, .goog-te-banner-frame.skiptranslate,
+    .goog-te-gadget-icon, iframe.skiptranslate, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+    .goog-te-gadget { font-size: 0 !important; }
+    body { top: 0 !important; position: static !important; }
+    /* Google wraps translated text in <font> tags — keep them inheriting our styles */
+    font { background: transparent !important; box-shadow: none !important; }
+</style>
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,sw,fr,de',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+
+    // Manual choice from our menu: set the googtrans cookie and reload.
+    function vkSetLanguage(lang) {
+        var host = location.hostname;
+        var expire = 'expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        // clear any existing value (all scopes)
+        document.cookie = 'googtrans=;path=/;' + expire;
+        document.cookie = 'googtrans=;path=/;domain=' + host + ';' + expire;
+        document.cookie = 'googtrans=;path=/;domain=.' + host + ';' + expire;
+        if (lang && lang !== 'en') {
+            var val = '/en/' + lang;
+            document.cookie = 'googtrans=' + val + ';path=/';
+            document.cookie = 'googtrans=' + val + ';path=/;domain=.' + host;
+        }
+        // remember that the visitor made a choice, so auto-detect never overrides it
+        document.cookie = 'vk_lang_seen=1;path=/;max-age=' + (60 * 60 * 24 * 365);
+        location.reload();
+    }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+
+{{-- Cookie consent (shown once; choice remembered in localStorage) --}}
+<div x-data="{ show: false }" x-init="show = !localStorage.getItem('vk_cookie_consent')"
+     x-show="show" x-transition x-cloak
+     class="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-6 sm:max-w-sm z-[60] bg-white rounded-2xl shadow-2xl border border-gray-100 p-5">
+    <p class="text-sm font-semibold text-gray-900 mb-1">We use cookies</p>
+    <p class="text-xs text-gray-500 leading-relaxed mb-4">
+        Essential cookies keep the site running; we also use a cookie to remember your language.
+        See our <a href="{{ route('privacy') }}" class="text-forest-700 underline">Privacy Policy</a>.
+    </p>
+    <div class="flex gap-2">
+        <button @click="localStorage.setItem('vk_cookie_consent','accepted'); show = false"
+                class="flex-1 bg-forest-700 text-white text-sm font-semibold py-2 rounded-xl hover:bg-forest-800 transition">Accept</button>
+        <button @click="localStorage.setItem('vk_cookie_consent','declined'); show = false"
+                class="px-4 text-sm font-medium text-gray-500 hover:text-gray-700 transition">Decline</button>
+    </div>
+</div>
 
 @livewireScripts
 @stack('scripts')

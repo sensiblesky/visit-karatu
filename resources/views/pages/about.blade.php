@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'About Karatu')
-@section('meta_description', 'Learn about Karatu — the highland gateway to Ngorongoro Crater, Lake Eyasi and Lake Manyara in northern Tanzania.')
+@section('meta_description', 'Learn about Karatu, the highland gateway to Ngorongoro Crater, Lake Eyasi and Lake Manyara in northern Tanzania.')
 
 @section('content')
 
@@ -19,7 +19,7 @@
         </nav>
         <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-3">About Karatu</h1>
         <p class="text-lg text-white/80 max-w-2xl leading-relaxed">
-            The highland gateway to Ngorongoro Crater, Lake Eyasi and Lake Manyara — and the heart of northern Tanzania's safari circuit.
+            The highland gateway to Ngorongoro Crater, Lake Eyasi and Lake Manyara, at the heart of northern Tanzania's safari circuit.
         </p>
     </div>
 </section>
@@ -29,7 +29,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
             <p class="text-forest-600 text-sm font-semibold tracking-wide uppercase mb-3">Welcome to {{ setting('site_name', 'VisitKaratu') }}</p>
-            <h2 class="text-3xl font-bold text-gray-900 mb-5">A cool green highland, surrounded by world-class wildlife</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-5">A cool green highland, surrounded by remarkable wildlife</h2>
             <div class="space-y-4 text-gray-600 leading-relaxed">
                 <p>
                     Sitting at around 1,500 metres in the Ngorongoro highlands, Karatu is a lush farming town famous for its coffee
@@ -38,12 +38,12 @@
                 </p>
                 <p>
                     {{ setting('site_name', 'VisitKaratu') }} is a community directory that brings together the area's lodges, tour
-                    operators, attractions, sport clubs and cultural experiences in one place — making it easy for travellers to
+                    operators, attractions, sport clubs and cultural experiences in one place, making it easy for travellers to
                     discover, compare and connect directly with local businesses.
                 </p>
                 <p>
-                    Whether you are planning a once-in-a-lifetime crater safari or simply passing through on the northern circuit,
-                    Karatu offers an authentic, uncrowded slice of Tanzania.
+                    Whether you are planning a full crater safari or simply passing through on the northern circuit,
+                    Karatu offers a genuine, uncrowded side of Tanzania.
                 </p>
             </div>
             <div class="mt-8 flex flex-wrap gap-4">
@@ -115,7 +115,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach([
                 ['title' => 'By Air', 'text' => 'Fly into Kilimanjaro International Airport (JRO) or Arusha Airport, then drive 3–4 hours west to Karatu.'],
-                ['title' => 'By Road', 'text' => 'Karatu sits on the sealed road between Arusha and the Ngorongoro Gate — about 140 km from Arusha town.'],
+                ['title' => 'By Road', 'text' => 'Karatu sits on the sealed road between Arusha and the Ngorongoro Gate, about 140 km from Arusha town.'],
                 ['title' => 'Best Time', 'text' => 'Karatu is a year-round destination. June–October is dry-season prime time; the green season runs November–May.'],
             ] as $item)
                 <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">

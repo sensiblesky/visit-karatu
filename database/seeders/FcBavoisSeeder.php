@@ -45,9 +45,9 @@ class FcBavoisSeeder extends Seeder
             }
         }
 
-        $short = 'FC Bavois — a Swiss football club — brought its first team to Karatu for a training camp and community football project.';
+        $short = 'FC Bavois, a Swiss football club, brought its first team to Karatu for a training camp and community football project.';
         $full = "FC Bavois embarked on a unique adventure: supporting the development of football in Tanzania, the home country of their assistant coach Renatus Boniface Njihole.\n\n".
-            "The first team travelled to Karatu for a training camp, combining professional preparation with a genuine human and sporting project — training sessions, friendly matches, and time shared with local clubs and young players.\n\n".
+            "The first team travelled to Karatu for a training camp, combining professional preparation with a genuine human and sporting project, training sessions, friendly matches, and time shared with local clubs and young players.\n\n".
             "Between sessions the squad explored the region: game drives into the Ngorongoro Conservation Area, visits to highland lodges, and moments with the local community. It is a partnership that puts Karatu on the map as a destination for sports tourism and football development.";
 
         $listing = Listing::updateOrCreate(
@@ -56,7 +56,7 @@ class FcBavoisSeeder extends Seeder
                 'user_id' => $owner->id,
                 'category_id' => $category->id,
                 'location_id' => $location->id,
-                'name' => 'FC Bavois in Tanzania — Football & Community Project',
+                'name' => 'FC Bavois in Tanzania: Football & Community Project',
                 'short_description' => $short,
                 'full_description' => $full,
                 'price_amount' => null,
@@ -92,7 +92,7 @@ class FcBavoisSeeder extends Seeder
         Event::updateOrCreate(
             ['title' => 'FC Bavois Training Camp in Karatu'],
             [
-                'description' => 'Swiss club FC Bavois brought its first team to Karatu for a training camp and community football project — training sessions and friendly matches with local clubs, alongside safaris in the Ngorongoro highlands.',
+                'description' => 'Swiss club FC Bavois brought its first team to Karatu for a training camp and community football project, training sessions and friendly matches with local clubs, alongside safaris in the Ngorongoro highlands.',
                 'location_id' => $location->id,
                 'starts_at' => now()->subDays(6)->setTime(9, 0),
                 'ends_at' => now()->subDays(1)->setTime(17, 0),

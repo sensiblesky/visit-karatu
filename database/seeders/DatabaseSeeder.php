@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             FcBavoisSeeder::class,
             NewsSeeder::class,
+            LilacSeeder::class,
         ]);
     }
 }

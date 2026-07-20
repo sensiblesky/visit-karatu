@@ -114,6 +114,7 @@
                     <div x-show="open" x-transition x-cloak
                          class="absolute top-full left-0 mt-1 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
                         <a href="{{ route('invest') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Invest in Karatu</a>
+                        <a href="{{ route('hotel-partnership') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Hotel Partnership</a>
                         <a href="{{ route('sports-sponsorships') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Sports Sponsorships</a>
                         <a href="{{ route('sponsors.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-forest-50 hover:text-forest-700 transition-colors">Partners &amp; Sponsors</a>
                         <div class="my-1 border-t border-gray-100"></div>
@@ -266,6 +267,7 @@
                 </button>
                 <div x-show="open" x-transition x-cloak>
                     <a href="{{ route('invest') }}" class="{{ $mSub }}">Invest in Karatu</a>
+                    <a href="{{ route('hotel-partnership') }}" class="{{ $mSub }}">Hotel Partnership</a>
                     <a href="{{ route('sports-sponsorships') }}" class="{{ $mSub }}">Sports Sponsorships</a>
                     <a href="{{ route('sponsors.index') }}" class="{{ $mSub }}">Partners & Sponsors</a>
                     <a href="{{ route('sponsors.index') }}#become-a-sponsor" class="{{ $mSub }}">Become a Sponsor</a>

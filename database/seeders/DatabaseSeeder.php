@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             FcBavoisSeeder::class,
             NewsSeeder::class,
             LilacSeeder::class,
+            FeedbackMediaSeeder::class,
         ]);
     }
 }

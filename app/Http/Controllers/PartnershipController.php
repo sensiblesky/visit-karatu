@@ -30,4 +30,10 @@ class PartnershipController extends Controller
     {
         return view('pages.invest');
     }
+
+    /** Hotel & hospitality partnership programme. */
+    public function hotelPartnership()
+    {
+        return view('pages.hotel-partnership');
+    }
 }

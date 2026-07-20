@@ -35,6 +35,7 @@ Route::post('/sponsors/apply', [SponsorPageController::class, 'apply'])->middlew
 
 // Investment + Sports Sponsorships (Visit Rwanda style)
 Route::get('/invest', [\App\Http\Controllers\PartnershipController::class, 'invest'])->name('invest');
+Route::get('/hotel-partnership', [\App\Http\Controllers\PartnershipController::class, 'hotelPartnership'])->name('hotel-partnership');
 Route::get('/sports-sponsorships', [\App\Http\Controllers\PartnershipController::class, 'sportsIndex'])->name('sports-sponsorships');
 Route::get('/partners/{sponsor}', [\App\Http\Controllers\PartnershipController::class, 'show'])->name('partners.show');
 Route::get('/listings', [ListingController::class, 'index'])->name('listings.index');

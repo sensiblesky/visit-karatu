@@ -246,7 +246,7 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Getting to Karatu</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach([
-                ['title' => 'By Air', 'text' => 'Fly into Kilimanjaro International Airport (JRO) or Arusha Airport, then drive 3–4 hours west to Karatu.'],
+                ['title' => 'By Air', 'text' => 'Fly into Kilimanjaro International Airport (JRO) or Arusha Airport, then drive 3–4 hours west to Karatu. For a quicker connection, take a domestic flight via Lake Manyara (Manyara) Airport, a short drive from Karatu.'],
                 ['title' => 'By Road', 'text' => 'Karatu sits on the sealed road between Arusha and the Ngorongoro Gate, about 140 km from Arusha town.'],
                 ['title' => 'Best Time', 'text' => 'Karatu is a year-round destination. June–October is dry-season prime time; the green season runs November–May.'],
             ] as $item)

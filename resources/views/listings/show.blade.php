@@ -147,6 +147,26 @@
                             @endforeach
                         </div>
                     @endif
+
+                    {{-- Videos --}}
+                    @if($listing->videos->count())
+                        <div class="mt-4">
+                            <h3 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-1.5">
+                                <svg class="w-4 h-4 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 6h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+                                {{ $listing->videos->count() }} video{{ $listing->videos->count() === 1 ? '' : 's' }}
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                @foreach($listing->videos as $video)
+                                    <video controls preload="metadata" playsinline
+                                           @if($video->poster) poster="{{ Storage::url($video->poster) }}" @endif
+                                           class="w-full rounded-2xl bg-black aspect-video object-cover">
+                                        <source src="{{ Storage::url($video->path) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Title + meta --}}

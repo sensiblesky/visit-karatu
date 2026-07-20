@@ -89,6 +89,11 @@ class Listing extends Model
         return $this->hasOne(ListingImage::class)->where('is_cover', true);
     }
 
+    public function videos()
+    {
+        return $this->hasMany(ListingVideo::class)->orderBy('sort_order');
+    }
+
     public function amenities()
     {
         return $this->belongsToMany(Amenity::class, 'listing_amenity');

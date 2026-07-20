@@ -49,6 +49,21 @@
             </div>
         @endif
 
+        {{-- Where we promote Visit Karatu — Hoval Promotion League map --}}
+        <div class="mt-16">
+            <div class="text-center mb-8 max-w-2xl mx-auto">
+                <p class="text-xs font-semibold uppercase tracking-widest text-forest-600 mb-2">Les clubs sur la carte</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Visit Karatu across the Hoval Promotion League</h3>
+                <p class="text-gray-600">Through our partnership with FC Bavois and the Swiss Hoval Promotion League, the Visit Karatu name travels to football fans across Switzerland &mdash; every club and city where we promote Karatu, season 2026/2027.</p>
+            </div>
+            <div class="rounded-3xl overflow-hidden border border-gray-100 shadow-sm bg-white">
+                <img loading="lazy" decoding="async"
+                     src="{{ asset('images/partnerships/hoval-promotion-league-map.jpg') }}"
+                     alt="Hoval Promotion League 2026/2027 — clubs and cities where Visit Karatu is promoted across Switzerland"
+                     class="w-full h-auto">
+            </div>
+        </div>
+
         {{-- CTA --}}
         <div class="mt-16 bg-forest-50 rounded-3xl p-10 text-center">
             <h3 class="text-2xl font-bold text-gray-900 mb-2">Become a sports partner</h3>
